@@ -4,6 +4,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { BackgroundMusic } from "./components/BackgroundMusic";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import "./styles/theme-ui.css";
+import "./styles/site-layout-final-fixes.css";
 
 const Home = lazy(() => import("./pages/Home"));
 const ConferenceHome = lazy(() => import("./pages/ConferenceHome"));
