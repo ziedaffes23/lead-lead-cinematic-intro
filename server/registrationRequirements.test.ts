@@ -18,7 +18,7 @@ describe("registration requirements and dark-only presentation", () => {
   it("marks core registration inputs as required", () => {
     expect(registerSource).toContain('placeholder="Foulen" required');
     expect(registerSource).toContain('placeholder="Fouléni" required');
-    expect(registerSource).toContain('placeholder="Keep as text" required');
+    expect(registerSource).toContain('placeholder="Enter your CIN number" required');
     expect(registerSource).toContain('<select required value={form.lc}');
     expect(registerSource).toContain('Country code<select value={form.phoneCountry}');
     expect(registerSource).toContain('inputMode="tel" required');
@@ -35,13 +35,16 @@ describe("registration requirements and dark-only presentation", () => {
     expect(registerSource).toContain('LCVP');
     expect(registerSource).toContain('LCP');
     expect(registerSource).toContain('80 TND / per night');
-    expect(registerSource).toContain('receipt-summary');
     expect(dataSource).toContain('name: "SU Bullaregia"');
     expect(registerSource).toContain('autoComplete="email" required');
-    expect(registerSource).toContain('<select required value={form.nationality}');
+    expect(registerSource).not.toContain('label>Nationality<select');
     expect(registerSource).toContain('<select required value={form.track}');
+    expect(registerSource).toContain('form.track === "EB" ? ["LCVP", "LCP"]');
+    expect(registerSource).toContain('form.track === "MMB" ? ["Manager", "Team Leader"]');
     expect(registerSource).toContain('<select required value={form.position}');
     expect(registerSource).toContain('<select required value={form.department}');
+    expect(registerSource).toContain('placeholder="Write your department"');
+    expect(registerSource).toContain('Error: registration not submitted.');
   });
 
   it("locks the public site to dark mode and removes the navigation toggle", () => {

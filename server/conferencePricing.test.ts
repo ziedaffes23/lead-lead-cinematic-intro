@@ -22,10 +22,10 @@ describe("conference pricing", () => {
     expect(getContribution("Tounsi", "EB")).toMatchObject({ price: 240, currency: "TND" });
   });
 
-  it("adds accommodation at 80 TND per night for a single room", () => {
-    expect(getContribution("Tounsi", "MMB", true)).toMatchObject({ price: 320, currency: "TND" });
-    expect(getContribution("Tounsi", "EB", true)).toMatchObject({ price: 480, currency: "TND" });
-    expect(getContribution("Tounsi", "MMB", true)?.note).toContain("80 TND / per night");
+  it("adds a 50 TND single-room surcharge", () => {
+    expect(getContribution("Tounsi", "MMB", true)).toMatchObject({ price: 210, currency: "TND" });
+    expect(getContribution("Tounsi", "EB", true)).toMatchObject({ price: 290, currency: "TND" });
+    expect(getContribution("Tounsi", "MMB", true)?.note).toContain("+50 TND");
   });
 
   it("does not calculate a contribution for an incomplete or non-Tunisian selection", () => {

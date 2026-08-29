@@ -4,6 +4,7 @@ export type ConferenceTrack = "" | "MMB" | "EB";
 export const TUNISIAN_MMB_TND = 160;
 export const TUNISIAN_EB_TND = 240;
 export const ACCOMMODATION_PER_NIGHT_TND = 80;
+export const SINGLE_ROOM_SURCHARGE_TND = 50;
 export const MMB_DURATION_DAYS = 3;
 export const EB_DURATION_DAYS = 4;
 
@@ -23,12 +24,10 @@ export function getContribution(
   const isMmb = track === "MMB";
   const basePrice = isMmb ? TUNISIAN_MMB_TND : TUNISIAN_EB_TND;
   const durationDays = isMmb ? MMB_DURATION_DAYS : EB_DURATION_DAYS;
-  const accommodationNights = Math.max(1, durationDays - 1);
-  const accommodationTotal = accommodationNights * ACCOMMODATION_PER_NIGHT_TND;
-  const price = basePrice + (singleRoom ? accommodationTotal : 0);
+  const price = basePrice + (singleRoom ? SINGLE_ROOM_SURCHARGE_TND : 0);
   const roomNote = singleRoom
-    ? ` Single room accommodation: ${ACCOMMODATION_PER_NIGHT_TND} TND / per night × ${accommodationNights} nights (+${accommodationTotal} TND).`
-    : ` Shared room selected. Single room accommodation is ${ACCOMMODATION_PER_NIGHT_TND} TND / per night.`;
+    ? ` Single room selected: +${SINGLE_ROOM_SURCHARGE_TND} TND.`
+    : ` Shared room selected. Single room surcharge: +${SINGLE_ROOM_SURCHARGE_TND} TND.`;
 
   return {
     price,

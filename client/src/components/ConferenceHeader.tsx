@@ -2,7 +2,7 @@ export type ConferencePageId = "home" | "brief" | "principles" | "banners" | "mi
 
 const navigation = [
   ["brief", "/mission", "MISSION"],
-  ["principles", "/principles", "PRINCIPLES"],
+  ["principles", "/principles", "CREED"],
   ["banners", "/hall-of-banners", "BANNERS"],
   ["mirage", "/mirage", "MIRAGE"],
   ["game", "/game", "TRIAL"],

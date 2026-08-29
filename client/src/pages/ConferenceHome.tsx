@@ -61,7 +61,7 @@ export default function ConferenceHome() {
             <span><small>STARTS</small><b>10 SEP 2026</b></span>
             <span><small>MMB DURATION</small><b>3 DAYS</b></span><span><small>EB DURATION</small><b>4 DAYS</b></span>
             <span><small>HOST</small><b>LC THYNA</b></span>
-            <span><small>LOCATION</small><b>AMIR PALACE</b></span>
+            <span><small>LOCATION</small><b>AMIR PALACE</b></span><span><small>ACCOMMODATION</small><b>80 TND PER NIGHT</b></span>
           </div>
           <div className="world-hero__actions">
             <button className="game-primary" type="button" onClick={() => openRegistration()}><span>START REGISTRATION</span><b>→</b></button>
@@ -74,7 +74,7 @@ export default function ConferenceHome() {
           <div className="mission-console__radar" aria-hidden="true"><span /><i /><b>01</b></div>
           <p className="mission-console__label">CURRENT OBJECTIVE</p>
           <h2>FOLLOW THE SIGNAL</h2>
-          <div className="mission-console__progress"><div><span>MISSION PROGRESS</span><b>01 / 05</b></div><i><b /></i></div>
+          <div className="mission-console__progress"><div><span>MISSION PROGRESS</span><b>01 / 03</b></div><i><b /></i></div>
           <div className="mission-console__footer">
             <span><small>COUNTDOWN</small><strong aria-live="polite">{eventStarted ? "LIVE" : `${pad(days)}:${pad(hours)}:${pad(minutes)}`}</strong></span>
             <span><small>STATUS</small><strong>OPEN</strong></span>

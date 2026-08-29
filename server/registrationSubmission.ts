@@ -50,9 +50,27 @@ export async function submitRegistrationToSheets(input: RegistrationSubmissionIn
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(input),
+      redirect: "manual",
       signal: AbortSignal.timeout(30_000),
     });
-    const confirmation = confirmSheetsDelivery(response.ok, await response.text());
+
+    // Apps Script returns the ContentService JSON through a one-time 302 redirect.
+    // Fetching the redirect target explicitly avoids clients turning the POST into
+    // an invalid follow-up request and receiving an HTML "Page Not Found" response.
+    const redirectStatuses = new Set([301, 302, 303, 307, 308]);
+    const finalResponse = redirectStatuses.has(response.status)
+      ? await (async () => {
+          const location = response.headers.get("location");
+          if (!location) throw new Error("The registration service did not provide a response location.");
+          return fetch(location, {
+            headers: { Accept: "application/json" },
+            redirect: "manual",
+            signal: AbortSignal.timeout(30_000),
+          });
+        })()
+      : response;
+
+    const confirmation = confirmSheetsDelivery(finalResponse.ok, await finalResponse.text());
     return confirmation;
   } catch (error) {
     if (error instanceof TRPCError) throw error;
