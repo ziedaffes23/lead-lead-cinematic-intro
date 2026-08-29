@@ -1310,3 +1310,117 @@ body:has(.registration-site) {
     align-items: flex-start;
   }
 }
+
+/* Shared city background for the home and content routes only. */
+.game-home:not(.chase-route) {
+  isolation: isolate !important;
+  background: #17130f !important;
+}
+
+.game-home:not(.chase-route)::before,
+.game-home:not(.chase-route)::after {
+  position: fixed;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.game-home:not(.chase-route)::before {
+  z-index: -2;
+  background-image: url("/assets/lead-lead-city-background.jfif");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: brightness(0.58) saturate(0.72) contrast(0.96);
+  transform: scale(1.025);
+}
+
+.game-home:not(.chase-route)::after {
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(2, 8, 14, 0.9) 0%, rgba(4, 12, 18, 0.48) 23%, rgba(4, 10, 16, 0.7) 68%, rgba(2, 6, 11, 0.94) 100%),
+    linear-gradient(90deg, rgba(2, 7, 13, 0.78) 0%, rgba(3, 8, 13, 0.28) 52%, rgba(2, 7, 13, 0.76) 100%);
+}
+
+.game-home:not(.chase-route) > .cinematic-background,
+.game-home:not(.chase-route) .world-hero__backdrop {
+  display: none !important;
+}
+
+.game-home:not(.chase-route) .world-hero,
+.game-home:not(.chase-route) .conference-section-page__main,
+.game-home:not(.chase-route) .route-deck {
+  background: transparent !important;
+}
+
+.game-home:not(.chase-route) .conference-nav {
+  background: rgba(2, 8, 14, 0.78) !important;
+  border-bottom-color: rgba(231, 183, 100, 0.32) !important;
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.24) !important;
+  backdrop-filter: blur(12px) saturate(0.85) !important;
+}
+
+.game-home:not(.chase-route) .world-hero__copy,
+.game-home:not(.chase-route) .section-intro-row,
+.game-home:not(.chase-route) .route-deck > * {
+  text-shadow: 0 0.18rem 0.85rem rgba(0, 0, 0, 0.76);
+}
+
+.game-home:not(.chase-route) .world-hero__copy h1,
+.game-home:not(.chase-route) .section-intro-row h1,
+.game-home:not(.chase-route) .route-deck h1,
+.game-home:not(.chase-route) .route-deck h2 {
+  color: #fff7e5 !important;
+  text-shadow: 0 0.3rem 1.2rem rgba(0, 0, 0, 0.84) !important;
+}
+
+.game-home:not(.chase-route) .world-hero__lead,
+.game-home:not(.chase-route) .section-intro-row__copy,
+.game-home:not(.chase-route) .route-deck > p {
+  color: #f2eadb !important;
+}
+
+.game-home:not(.chase-route) .world-hero__facts,
+.game-home:not(.chase-route) .world-chapter-dock,
+.game-home:not(.chase-route) .mission-console {
+  background-color: rgba(3, 12, 20, 0.72) !important;
+  border-color: rgba(231, 183, 100, 0.38) !important;
+  box-shadow: 0 1rem 2.8rem rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(9px) !important;
+}
+
+.game-home:not(.chase-route) .quest-card,
+.game-home:not(.chase-route) .skill-node,
+.game-home:not(.chase-route) .faction-card,
+.game-home:not(.chase-route) .leaderboard-card,
+.game-home:not(.chase-route) .readiness-card {
+  background: linear-gradient(145deg, rgba(4, 21, 32, 0.9), rgba(2, 9, 16, 0.88)) !important;
+  border-color: rgba(183, 211, 218, 0.34) !important;
+  box-shadow: 0 1.2rem 2.5rem rgba(0, 0, 0, 0.34) !important;
+}
+
+.game-home:not(.chase-route) .quest-card p,
+.game-home:not(.chase-route) .skill-node p,
+.game-home:not(.chase-route) .faction-card p,
+.game-home:not(.chase-route) .leaderboard-card p,
+.game-home:not(.chase-route) .readiness-card p {
+  color: rgba(241, 235, 222, 0.84) !important;
+}
+
+.game-home:not(.chase-route) .conference-footer {
+  background: rgba(2, 7, 12, 0.82) !important;
+  border-top-color: rgba(231, 183, 100, 0.32) !important;
+}
+
+@media (max-width: 720px) {
+  .game-home:not(.chase-route)::before {
+    background-position: 58% center;
+    filter: brightness(0.52) saturate(0.7) contrast(0.94);
+  }
+
+  .game-home:not(.chase-route)::after {
+    background:
+      linear-gradient(180deg, rgba(2, 8, 14, 0.93) 0%, rgba(4, 12, 18, 0.6) 35%, rgba(2, 7, 12, 0.92) 100%),
+      linear-gradient(90deg, rgba(2, 7, 13, 0.72), rgba(2, 7, 13, 0.48));
+  }
+}
