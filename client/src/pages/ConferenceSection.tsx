@@ -26,6 +26,7 @@ import "@/styles/mobile-layout.css";
 import "@/styles/mobile-final-fixes.css";
 import "@/styles/layout-system.css";
 import "@/styles/mirage-redesign.css";
+import "@/styles/route-page-polish.css";
 
 type SectionId = "brief" | "principles" | "prep" | "banners" | "mirage";
 type Faction = (typeof conferenceFactions)[number];
