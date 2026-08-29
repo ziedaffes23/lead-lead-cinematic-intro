@@ -15,7 +15,7 @@ const REQUIRED_HEADERS = [
   "Email", "Local committee", "Nationality", "Other nationality", "Track", "Position",
   "Single room", "Department", "Price", "Currency", "Allergies", "Note",
   "Profile Photo URL", "Profile Photo Name", "CV URL", "CV Name",
-  "Identity Document URL", "Identity Document Name",
+  "Identity Document URL", "Identity Document Name", "Indemnity Signature", "Indemnity Accepted",
 ];
 
 const HEADER_ALIASES = {
@@ -82,6 +82,8 @@ function doPost(event) {
       "CV Name": driveDocuments.cv ? driveDocuments.cv.name : cleanText(payload.cvName),
       "Identity Document URL": driveDocuments.identity ? driveDocuments.identity.url : cleanUrl(payload.identityUrl),
       "Identity Document Name": driveDocuments.identity ? driveDocuments.identity.name : cleanText(payload.identityName),
+      "Indemnity Signature": cleanText(payload.indemnitySignature),
+      "Indemnity Accepted": payload.indemnityAccepted === true || String(payload.indemnityAccepted).toLowerCase() === "true" ? "Yes" : "No",
     };
 
     sheet.appendRow(headers.map((header) => Object.prototype.hasOwnProperty.call(rowByHeader, header) ? rowByHeader[header] : ""));
@@ -98,12 +100,13 @@ function parsePayload(event) {
 }
 
 function validatePayload(payload) {
-  const required = ["firstName", "lastName", "cin", "phoneCountry", "phone", "email", "lc", "nationality", "track", "position", "department", "price", "currency", "allergies", "note", "photoUrl", "cvUrl", "identityUrl"];
+  const required = ["firstName", "lastName", "cin", "phoneCountry", "phone", "email", "lc", "nationality", "track", "position", "department", "price", "currency", "allergies", "note", "photoUrl", "cvUrl", "identityUrl", "indemnitySignature", "indemnityAccepted"];
   required.forEach((key) => {
     if (payload[key] === undefined || payload[key] === null || String(payload[key]).trim() === "") throw new Error(`Missing required field: ${key}.`);
   });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(String(payload.email).trim())) throw new Error("Email must be a valid email address.");
   if (payload.nationality !== "Tunisian") throw new Error("Only Tunisian registrations are currently accepted.");
+  if (payload.indemnityAccepted !== true && String(payload.indemnityAccepted).toLowerCase() !== "true") throw new Error("Indemnity consent is required.");
   if (!ALLOWED_TRACKS.includes(cleanText(payload.track))) throw new Error("Select a valid conference track.");
   if (!ALLOWED_POSITIONS.includes(cleanText(payload.position))) throw new Error("Select a valid position.");
 }

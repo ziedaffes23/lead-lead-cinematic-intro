@@ -27,6 +27,8 @@ export const registrationSubmissionInput = z.object({
   cvName: z.string().trim().min(1),
   identityUrl: publicUrl,
   identityName: z.string().trim().min(1),
+  indemnitySignature: z.string().trim().min(1),
+  indemnityAccepted: z.boolean().refine((value) => value, "Indemnity consent is required."),
 });
 
 export type RegistrationSubmissionInput = z.infer<typeof registrationSubmissionInput>;

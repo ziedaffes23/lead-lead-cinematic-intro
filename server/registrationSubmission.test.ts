@@ -27,6 +27,8 @@ const input: RegistrationSubmissionInput = {
   cvName: "cv.pdf",
   identityUrl: "https://storage.example.com/identity.pdf",
   identityName: "identity.pdf",
+  indemnitySignature: "Foulen Fouleni",
+  indemnityAccepted: true,
 };
 
 afterEach(() => {

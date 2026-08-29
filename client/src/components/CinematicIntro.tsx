@@ -11,7 +11,6 @@ interface CinematicIntroProps { onIntroComplete?: () => void; reducedMotion?: bo
 
 export function CinematicIntro({ onIntroComplete, reducedMotion = false }: CinematicIntroProps) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
   const handleRef = useRef<CinematicHandle | null>(null);
   const revealRef = useRef<HTMLDivElement>(null);
   const [previewMode] = useState(() => {
@@ -29,32 +28,6 @@ export function CinematicIntro({ onIntroComplete, reducedMotion = false }: Cinem
   const [phase, setPhase] = useState<CinematicPhase>(previewMode === "demo" ? "reveal" : isActionPreview ? (previewMode as CinematicPhase) : "opening");
   const [webglFailed, setWebglFailed] = useState(false);
   const [exited, setExited] = useState(false);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return undefined;
-    audio.volume = 0.34;
-
-    const startMusic = async () => {
-      if (!audio.paused) return;
-      if (audio.readyState === HTMLMediaElement.HAVE_NOTHING) audio.load();
-      try {
-        await audio.play();
-      } catch {
-        // Browsers may block autoplay until the visitor interacts with the page.
-      }
-    };
-    const retryOnInteraction = () => { void startMusic(); };
-    void startMusic();
-    window.addEventListener("pointerdown", retryOnInteraction, true);
-    window.addEventListener("keydown", retryOnInteraction, true);
-    return () => {
-      window.removeEventListener("pointerdown", retryOnInteraction, true);
-      window.removeEventListener("keydown", retryOnInteraction, true);
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, []);
 
   useEffect(() => {
     if (reducedMotion || !stageRef.current) return undefined;
@@ -84,7 +57,6 @@ export function CinematicIntro({ onIntroComplete, reducedMotion = false }: Cinem
 
   const completeIntro = () => {
     handleRef.current?.stop();
-    audioRef.current?.pause();
     window.sessionStorage.setItem("leadlead:intro-seen", "1");
     window.dispatchEvent(new CustomEvent("leadlead:intro-complete"));
     onIntroComplete?.();
@@ -97,7 +69,6 @@ export function CinematicIntro({ onIntroComplete, reducedMotion = false }: Cinem
 
   return (
     <main className={`cinematic-shell ${reducedMotion ? "is-static" : ""}`} aria-label="Lead & Lead opening cinematic">
-      <audio ref={audioRef} src={CINEMATIC_ASSETS.entryMusic} loop preload="auto" aria-label="Lead & Lead entry music" />
       <div ref={stageRef} className="cinematic-stage" style={{ backgroundImage: `linear-gradient(180deg, rgba(4, 9, 16, 0.15), rgba(3, 6, 11, 0.58)), url(${CINEMATIC_ASSETS.rooftopReference})` }} />
       <div className={`cinematic-vignette ${revealActive ? "is-quiet" : ""}`} aria-hidden="true" />
       <div className="cinematic-motion-lines" aria-hidden="true" />

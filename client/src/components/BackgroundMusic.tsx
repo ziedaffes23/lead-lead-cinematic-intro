@@ -4,14 +4,9 @@ import "@/styles/background-music.css";
 
 export function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [enabled, setEnabled] = useState(() => window.location.pathname !== "/" || window.sessionStorage.getItem("leadlead:intro-seen") === "1");
-  const [state, setState] = useState<"loading" | "playing" | "paused" | "blocked" | "error">("loading");
-
-  useEffect(() => {
-    const enableAfterIntro = () => setEnabled(true);
-    window.addEventListener("leadlead:intro-complete", enableAfterIntro);
-    return () => window.removeEventListener("leadlead:intro-complete", enableAfterIntro);
-  }, []);
+  const [enabled] = useState(true);
+  const [pausedByUser, setPausedByUser] = useState(() => window.sessionStorage.getItem("leadlead:music-paused") === "1");
+  const [state, setState] = useState<"loading" | "playing" | "paused" | "blocked" | "error">(() => pausedByUser ? "paused" : "loading");
 
   useEffect(() => {
     if (!enabled) return undefined;
@@ -21,7 +16,7 @@ export function BackgroundMusic() {
     audio.volume = 0.28;
 
     const tryPlay = async () => {
-      if (!audio.paused) return;
+      if (pausedByUser || !audio.paused) return;
       setState("loading");
       try {
         await audio.play();
@@ -52,14 +47,18 @@ export function BackgroundMusic() {
       window.removeEventListener("touchstart", retry, true);
       audio.pause();
     };
-  }, [enabled]);
+  }, [enabled, pausedByUser]);
 
   const toggle = () => {
     const audio = audioRef.current;
     if (!audio) return;
     if (audio.paused) {
+      window.sessionStorage.removeItem("leadlead:music-paused");
+      setPausedByUser(false);
       void audio.play().then(() => setState("playing")).catch(() => setState(audio.error ? "error" : "blocked"));
     } else {
+      window.sessionStorage.setItem("leadlead:music-paused", "1");
+      setPausedByUser(true);
       audio.pause();
       setState("paused");
     }
@@ -67,5 +66,5 @@ export function BackgroundMusic() {
 
   if (!enabled) return null;
   const label = state === "playing" ? "Pause music" : state === "error" ? "Music unavailable" : "Play music";
-  return <div className="background-music" aria-label="Site music"><audio ref={audioRef} src={CINEMATIC_ASSETS.entryMusic} loop preload="auto" autoPlay /><button type="button" onClick={toggle} disabled={state === "error"} aria-pressed={state === "playing"} aria-label={label}><span aria-hidden="true">{state === "playing" ? "Ⅱ" : "▶"}</span>{state === "error" ? "MUSIC OFFLINE" : state === "blocked" ? "PLAY MUSIC" : state === "playing" ? "MUSIC ON" : "MUSIC"}</button></div>;
+  return <div className="background-music" aria-label="Site music"><audio ref={audioRef} src={CINEMATIC_ASSETS.entryMusic} loop preload="auto" autoPlay={!pausedByUser} /><button type="button" onClick={toggle} disabled={state === "error"} aria-pressed={state === "playing"} aria-label={label}><span aria-hidden="true">{state === "playing" ? "Ⅱ" : "▶"}</span>{state === "error" ? "MUSIC OFFLINE" : state === "blocked" ? "PLAY MUSIC" : state === "playing" ? "MUSIC ON" : "MUSIC"}</button></div>;
 }

@@ -34,7 +34,9 @@ describe("registration requirements and dark-only presentation", () => {
     expect(registerSource).toContain('Team Leader');
     expect(registerSource).toContain('LCVP');
     expect(registerSource).toContain('LCP');
-    expect(registerSource).toContain('+50 TND');
+    expect(registerSource).toContain('+{form.track === "MMB" ? 100 : 150} TND');
+    expect(registerSource).toContain('INDEMNITY SIGNATURE');
+    expect(registerSource).toContain('indemnityAccepted');
     expect(registerSource).not.toContain('Accommodation is 80 TND / per night.');
     expect(dataSource).toContain('name: "SU Bullaregia"');
     expect(registerSource).toContain('autoComplete="email" required');
