@@ -21,3 +21,11 @@ html:has(.registration-site),body:has(.registration-site){height:auto!important;
 .registration-site>.conference-footer span{white-space:normal;text-align:center}
 .registration-site>.conference-footer span:last-child{color:#f0c878}
 @media(max-width:620px){.registration-site>.conference-footer{width:100vw;margin-top:1rem;padding:.8rem 1rem;font-size:.38rem;letter-spacing:.08em}.registration-site>.conference-footer i{height:.5rem}}
+
+/* Receipt contrast lock: the confirmation card must stay dark in every theme cascade. */
+.registration-site .dossier-panel .registration-receipt{background-color:#04121e!important;background-image:radial-gradient(circle at 88% 10%,rgba(231,183,100,.12),transparent 14rem),linear-gradient(145deg,#0a2639 0%,#061a2a 52%,#020b14 100%)!important;color:#edf3ef!important;border-color:#c89543!important;box-shadow:0 1.8rem 4rem rgba(0,0,0,.58),inset 0 0 0 1px rgba(158,216,244,.1)!important}
+.registration-site .dossier-panel .registration-receipt h3{color:#f4d58f!important;text-shadow:0 .2rem .8rem rgba(0,0,0,.55)!important}
+.registration-site .dossier-panel .registration-receipt .receipt-copy{color:#c4d6dc!important}
+.registration-site .dossier-panel .registration-receipt .receipt-reference{background:#020b14!important;background-image:linear-gradient(110deg,rgba(7,28,43,.95),rgba(2,10,17,.98))!important;border-color:rgba(158,216,244,.32)!important}
+.registration-site .dossier-panel .registration-receipt .receipt-reference span{color:#8fb5c4!important}
+.registration-site .dossier-panel .registration-receipt .receipt-reference strong{color:#f1cb79!important}
