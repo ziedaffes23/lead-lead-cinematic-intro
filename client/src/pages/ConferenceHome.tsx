@@ -58,7 +58,7 @@ export default function ConferenceHome() {
         <div
           className="world-hero__backdrop"
           style={{
-            backgroundImage: `url(${CINEMATIC_ASSETS.rooftopReference})`,
+            backgroundImage: `url(${CINEMATIC_ASSETS.thynaRooftopBackground})`,
           }}
           aria-hidden="true"
         />
