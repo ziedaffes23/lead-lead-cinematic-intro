@@ -109,7 +109,7 @@ export function CinematicIntro({ onIntroComplete, reducedMotion = false }: Cinem
       {webglFailed && <div className="cinematic-fallback-note">Live graphics are unavailable on this device. The cinematic has resolved to its final title card.</div>}
       <section ref={revealRef} className={`cinematic-reveal ${revealActive ? "is-active" : ""}`} aria-hidden={!revealActive}>
         <div className="reveal-streak" aria-hidden="true" />
-        <div className="presentation-lockup"><div className="thyna-seal"><img className="official-logo thyna-intro-mark" src="/manus-storage/lead-lead-2k26-emblem_777efc54.png" alt="Lead & Lead 2K26 emblem" /></div><div className="presentation-line"><i /><span>LC THYNA</span><i /></div><p>PROUDLY PRESENTS</p><h1>LEAD <em>&</em> LEAD <small>2K26</small></h1><div className="reveal-subtitle"><span>THE LEADERSHIP GATHERING</span><i /><strong>10 SEPTEMBER 2026</strong></div></div>
+        <div className="presentation-lockup"><div className="thyna-seal"><img className="official-logo thyna-intro-mark" src={CINEMATIC_ASSETS.logo} alt="LC Thyna logo" /></div><div className="presentation-line"><i /><span>LC THYNA</span><i /></div><p>PROUDLY PRESENTS</p><h1>LEAD <em>&</em> LEAD <small>2K26</small></h1><div className="reveal-subtitle"><span>THE LEADERSHIP GATHERING</span><i /><strong>10 SEPTEMBER 2026</strong></div></div>
         <button type="button" className="enter-button" onClick={completeIntro}><span>ENTER WORLD</span><b aria-hidden="true">→</b></button>
       </section>
       <ConferenceFooter compact />

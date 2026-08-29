@@ -173,3 +173,8 @@
 .presentation-line{margin-top:.15rem}
 .presentation-line span{white-space:nowrap}
 @media(max-width:600px){.thyna-seal{width:5.8rem;height:3.55rem}.thyna-intro-mark{width:4.9rem;height:2.8rem}.presentation-line{gap:.55rem}.presentation-line i{width:1.35rem}}
+
+/* LC Thyna intro mark: larger, clean, and proportionally contained. */
+.thyna-seal{width:9.2rem;height:6rem;margin-bottom:.15rem;border:0;border-radius:0;background:transparent;box-shadow:none}
+.thyna-intro-mark{width:8.4rem;height:5.25rem;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 0 .7rem rgba(255,255,255,.28))}
+@media(max-width:600px){.thyna-seal{width:7.2rem;height:4.7rem}.thyna-intro-mark{width:6.6rem;height:4.15rem}}
