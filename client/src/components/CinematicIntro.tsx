@@ -28,35 +28,26 @@ export function CinematicIntro({ onIntroComplete, reducedMotion = false }: Cinem
   const [phase, setPhase] = useState<CinematicPhase>(previewMode === "demo" ? "reveal" : isActionPreview ? (previewMode as CinematicPhase) : "opening");
   const [webglFailed, setWebglFailed] = useState(false);
   const [exited, setExited] = useState(false);
-  const [musicState, setMusicState] = useState<"loading" | "playing" | "paused" | "blocked" | "error">("loading");
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return undefined;
-    let disposed = false;
     audio.volume = 0.34;
 
     const startMusic = async () => {
       if (!audio.paused) return;
       if (audio.readyState === HTMLMediaElement.HAVE_NOTHING) audio.load();
-      setMusicState("loading");
       try {
         await audio.play();
-        if (!disposed) setMusicState("playing");
       } catch {
-        if (!disposed) setMusicState(audio.error ? "error" : "blocked");
+        // Browsers may block autoplay until the visitor interacts with the page.
       }
     };
     const retryOnInteraction = () => { void startMusic(); };
-    const handleAudioError = () => setMusicState("error");
-
-    audio.addEventListener("error", handleAudioError);
     void startMusic();
     window.addEventListener("pointerdown", retryOnInteraction, true);
     window.addEventListener("keydown", retryOnInteraction, true);
     return () => {
-      disposed = true;
-      audio.removeEventListener("error", handleAudioError);
       window.removeEventListener("pointerdown", retryOnInteraction, true);
       window.removeEventListener("keydown", retryOnInteraction, true);
       audio.pause();
@@ -90,19 +81,6 @@ export function CinematicIntro({ onIntroComplete, reducedMotion = false }: Cinem
     return () => context.revert();
   }, [phase]);
 
-  const toggleMusic = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (audio.paused) {
-      void audio.play().then(() => setMusicState("playing")).catch(() => setMusicState(audio.error ? "error" : "blocked"));
-    } else {
-      audio.pause();
-      setMusicState("paused");
-    }
-  };
-
-  const musicLabel = musicState === "playing" ? "PAUSE MUSIC" : musicState === "error" ? "MUSIC UNAVAILABLE" : musicState === "blocked" ? "PLAY MUSIC" : musicState === "loading" ? "LOADING MUSIC" : "PLAY MUSIC";
-
   const completeIntro = () => {
     handleRef.current?.stop();
     audioRef.current?.pause();
@@ -126,9 +104,6 @@ export function CinematicIntro({ onIntroComplete, reducedMotion = false }: Cinem
       <div className={`cinematic-impact ${impactActive ? "is-active" : ""}`} aria-hidden="true"><img src={CINEMATIC_ASSETS.spark} alt="" /></div>
       {!reducedMotion && <section className={`cinematic-loader ${ready ? "is-ready" : ""}`} aria-live="polite"><p>LOADING<span className="loader-dots">...</span></p><div className="loader-rule" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div><small>{progress}% · ESTABLISHING THE NIGHT</small></section>}
       <div className="cinematic-controls">
-        <button className="cinematic-music" type="button" onClick={toggleMusic} disabled={musicState === "error"} aria-pressed={musicState === "playing"} aria-label={musicLabel}>
-          <span aria-hidden="true">{musicState === "playing" ? "Ⅱ" : "▶"}</span>{musicLabel}
-        </button>
         <button className="cinematic-skip" type="button" onClick={completeIntro}>SKIP INTRO <span aria-hidden="true">↗</span></button>
       </div>
       {webglFailed && <div className="cinematic-fallback-note">Live graphics are unavailable on this device. The cinematic has resolved to its final title card.</div>}
