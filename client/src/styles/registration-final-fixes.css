@@ -14,3 +14,10 @@ html:has(.registration-site),body:has(.registration-site){height:auto!important;
 .registration-site .registration-receipt .receipt-reference span{color:#9fc6d5!important}
 .registration-site .registration-receipt .receipt-reference strong{color:#ffe0a0!important}
 @media(max-width:900px){.registration-site .register-layout{grid-template-columns:1fr}.registration-site .dossier-intro{position:relative;top:auto}.registration-site .dossier-panel{min-width:0}}
+
+/* Registration footer: full-bleed, readable, and aligned to the viewport rather than the padded dossier column. */
+.registration-site{padding-bottom:1.5rem!important}
+.registration-site>.conference-footer{width:100vw;max-width:none;margin-top:1.5rem;margin-left:calc(50% - 50vw);margin-right:0;padding:1rem clamp(1rem,5vw,5rem);border-top:1px solid rgba(231,183,100,.42);background:linear-gradient(90deg,#06111d 0%,#0c2b40 50%,#06111d 100%);color:#cfe1e7;box-shadow:0 -1rem 2.5rem rgba(0,0,0,.22)}
+.registration-site>.conference-footer span{white-space:normal;text-align:center}
+.registration-site>.conference-footer span:last-child{color:#f0c878}
+@media(max-width:620px){.registration-site>.conference-footer{width:100vw;margin-top:1rem;padding:.8rem 1rem;font-size:.38rem;letter-spacing:.08em}.registration-site>.conference-footer i{height:.5rem}}
