@@ -21,7 +21,9 @@ describe("ConferenceHome lighthouse hero", () => {
     expect(lighthouseStyles).toContain("animation:none");
   });
 
-  it("keeps the hero free of the distracting lighthouse beacon", () => {
+  it("uses an original creed-inspired sentinel instead of the distracting lighthouse beacon", () => {
+    expect(pageSource).toContain('className="world-hero__sentinel"');
+    expect(pageSource).toContain('className="sentinel-glyph"');
     expect(pageSource).not.toContain('className="world-hero__beacon"');
     expect(pageSource).not.toContain("world-hero__tower");
   });
