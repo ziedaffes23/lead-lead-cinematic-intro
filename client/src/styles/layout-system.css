@@ -1424,3 +1424,119 @@ body:has(.registration-site) {
       linear-gradient(90deg, rgba(2, 7, 13, 0.72), rgba(2, 7, 13, 0.48));
   }
 }
+
+/* Final route-specific background and mobile navigation correction. */
+.game-home--single-screen:not(.chase-route) {
+  background: #050911 !important;
+}
+
+.game-home--single-screen:not(.chase-route)::before,
+.game-home--single-screen:not(.chase-route)::after {
+  display: none !important;
+}
+
+.game-home--single-screen:not(.chase-route) > .cinematic-background,
+.game-home--single-screen:not(.chase-route) .world-hero__backdrop {
+  display: block !important;
+}
+
+.game-home--single-screen:not(.chase-route) .world-hero,
+.game-home--single-screen:not(.chase-route) .world-hero__facts {
+  background: transparent !important;
+}
+
+.game-home--single-screen:not(.chase-route) .conference-nav {
+  background: rgba(3, 10, 19, 0.92) !important;
+  border-bottom-color: rgba(158, 216, 244, 0.18) !important;
+}
+
+.game-home--single-screen:not(.chase-route) .world-hero__facts {
+  border-color: rgba(158, 216, 244, 0.22) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* The new artwork belongs to content pages, not the home hero. */
+.conference-section-page:not(.chase-route)::before {
+  background-image: url("/assets/lead-lead-city-background-v2.png") !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  filter: brightness(0.66) saturate(0.58) contrast(0.92) !important;
+}
+
+.conference-section-page:not(.chase-route)::after {
+  background:
+    linear-gradient(180deg, rgba(5, 11, 18, 0.86) 0%, rgba(5, 12, 18, 0.38) 28%, rgba(4, 10, 15, 0.7) 72%, rgba(2, 6, 11, 0.94) 100%),
+    linear-gradient(90deg, rgba(3, 8, 14, 0.74), rgba(3, 8, 14, 0.2) 54%, rgba(3, 8, 14, 0.72));
+}
+
+.conference-section-page:not(.chase-route) .conference-section-page__main,
+.conference-section-page:not(.chase-route) .route-deck {
+  background: transparent !important;
+}
+
+@media (max-width: 720px) {
+  .conference-nav {
+    min-height: 6.5rem !important;
+    height: auto !important;
+    align-content: center !important;
+    row-gap: 0.7rem !important;
+    overflow: visible !important;
+  }
+
+  .conference-nav .game-nav__links {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: calc(100vw - 2rem) !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 0.85rem !important;
+    padding: 0.25rem 0.1rem 0.45rem !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(231, 183, 100, 0.65) transparent !important;
+  }
+
+  .conference-nav .game-nav__links a,
+  .conference-nav .game-nav__links a:not([href="#chapters"]),
+  .conference-nav .game-nav__links button,
+  .conference-nav .game-nav__register {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    font-size: 0.58rem !important;
+    line-height: 1 !important;
+  }
+
+  .conference-nav .game-nav__links .game-nav__register {
+    padding: 0.65rem 0.8rem !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .conference-nav .game-brand b {
+    font-size: 0.58rem !important;
+  }
+
+  .conference-nav .game-brand small {
+    font-size: 0.39rem !important;
+  }
+
+  .conference-nav .game-nav__links {
+    width: calc(100vw - 1.2rem) !important;
+    gap: 0.72rem !important;
+  }
+
+  .conference-nav .game-nav__links a,
+  .conference-nav .game-nav__links a:not([href="#chapters"]),
+  .conference-nav .game-nav__links button,
+  .conference-nav .game-nav__register {
+    font-size: 0.56rem !important;
+  }
+}
