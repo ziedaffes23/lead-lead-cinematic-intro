@@ -284,3 +284,34 @@
     transition: none;
   }
 }
+
+@media (max-width: 720px) {
+  html:has(.game-home--single-screen),
+  body:has(.game-home--single-screen),
+  body:has(.game-home--single-screen) #root {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  .game-home--single-screen {
+    min-height: 100svh !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .game-home--single-screen > .world-hero {
+    min-height: calc(100svh - 7.3rem) !important;
+    overflow: visible !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  .game-home--single-screen .world-hero h1 {
+    font-size: clamp(3.4rem, 16vw, 5.4rem) !important;
+  }
+
+  .game-home--single-screen .mission-console {
+    margin-top: 1.4rem !important;
+  }
+}

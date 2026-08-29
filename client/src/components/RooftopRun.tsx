@@ -17,6 +17,8 @@ type Fragment = { x: number; y: number; taken?: boolean };
 const WIDTH = 960;
 const HEIGHT = 440;
 const GROUND = HEIGHT - 76;
+const TARGET_FRAME_MS = 1000 / 60;
+const BEST_SCORE_KEY = "lead-lead-rooftop-best";
 
 export function RooftopRun() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,10 +31,12 @@ export function RooftopRun() {
   const [best, setBest] = useState(0);
 
   useEffect(() => {
-    const saved = Number(
-      window.localStorage.getItem("lead-lead-rooftop-best") ?? 0
-    );
-    if (Number.isFinite(saved) && saved > 0) setBest(saved);
+    try {
+      const saved = Number(window.localStorage.getItem(BEST_SCORE_KEY) ?? 0);
+      if (Number.isFinite(saved) && saved > 0) setBest(saved);
+    } catch {
+      // The game remains playable when storage is blocked or unavailable.
+    }
   }, []);
 
   useEffect(() => {
@@ -41,12 +45,13 @@ export function RooftopRun() {
     if (!canvas || !context) return undefined;
     setCanvasReady(true);
     let frame = 0;
+    let lastTime = 0;
     let tick = 0;
     let distance = 0;
     let fragments = 0;
     let lives = 3;
     let speed = 7.3;
-    let nextSpawn = 72;
+    let nextSpawn = 110;
     let strikeFrames = 0;
     let invincible = 0;
     const player = { x: 156, y: GROUND, velocity: 0, jumps: 0, slide: 0 };
@@ -76,7 +81,7 @@ export function RooftopRun() {
       fragments = 0;
       lives = 3;
       speed = 7.3;
-      nextSpawn = 68;
+      nextSpawn = 110;
       strikeFrames = 0;
       invincible = 0;
       player.y = GROUND;
@@ -134,7 +139,7 @@ export function RooftopRun() {
         for (let index = 0; index < 3; index += 1)
           tokens.push({ x: WIDTH + 118 + index * 34, y });
       }
-      nextSpawn = Math.max(43, 103 - speed * 3.5) + Math.random() * 45;
+      nextSpawn = Math.max(74, 120 - speed * 3) + Math.random() * 48;
     };
     const fail = () => {
       if (invincible > 0) return;
@@ -145,7 +150,11 @@ export function RooftopRun() {
         setScore(result);
         setBest(current => {
           const next = Math.max(current, result);
-          window.localStorage.setItem("lead-lead-rooftop-best", String(next));
+          try {
+            window.localStorage.setItem(BEST_SCORE_KEY, String(next));
+          } catch {
+            // Best score persistence is optional; never interrupt a run.
+          }
           return next;
         });
         stateRef.current = "over";
@@ -332,9 +341,16 @@ export function RooftopRun() {
         context.stroke();
       }
     };
-    const loop = () => {
+    const loop = (timestamp: number) => {
+      const delta =
+        lastTime === 0
+          ? TARGET_FRAME_MS
+          : Math.min(50, Math.max(0, timestamp - lastTime));
+
+      lastTime = timestamp;
+      const frameScale = Math.min(2.5, delta / TARGET_FRAME_MS);
       frame = window.requestAnimationFrame(loop);
-      tick += 1;
+      tick += frameScale;
       const gradient = context.createLinearGradient(0, 0, 0, HEIGHT);
       gradient.addColorStop(0, "#030813");
       gradient.addColorStop(0.48, "#0e1f36");
@@ -391,23 +407,24 @@ export function RooftopRun() {
       context.lineTo(WIDTH + 30, GROUND + 54);
       context.stroke();
       if (stateRef.current === "playing") {
-        distance += speed;
+        distance += speed * frameScale;
         speed = Math.min(16.5, 7.45 + distance / 2300);
-        if (--nextSpawn <= 0) spawn();
-        player.velocity += 0.8;
-        player.y += player.velocity;
+        nextSpawn -= frameScale;
+        if (nextSpawn <= 0) spawn();
+        player.velocity += 0.8 * frameScale;
+        player.y += player.velocity * frameScale;
         if (player.y >= GROUND) {
           player.y = GROUND;
           player.velocity = 0;
           player.jumps = 0;
         }
-        if (player.slide > 0) player.slide -= 1;
-        if (strikeFrames > 0) strikeFrames -= 1;
-        if (invincible > 0) invincible -= 1;
+        if (player.slide > 0) player.slide -= frameScale;
+        if (strikeFrames > 0) strikeFrames -= frameScale;
+        if (invincible > 0) invincible -= frameScale;
       }
       const playerHeight = player.slide > 0 ? 26 : 62;
       obstacles.forEach(obstacle => {
-        if (stateRef.current === "playing") obstacle.x -= speed;
+        if (stateRef.current === "playing") obstacle.x -= speed * frameScale;
         drawObstacle(obstacle);
         if (
           stateRef.current === "playing" &&
@@ -450,7 +467,7 @@ export function RooftopRun() {
         context.restore();
       }
       tokens.forEach(token => {
-        if (stateRef.current === "playing") token.x -= speed;
+        if (stateRef.current === "playing") token.x -= speed * frameScale;
         context.save();
         context.translate(token.x, token.y);
         context.rotate(tick * 0.03);
@@ -515,6 +532,9 @@ export function RooftopRun() {
       if (["ArrowDown", "KeyS"].includes(event.code)) duck();
       if (["KeyF", "KeyJ", "KeyX"].includes(event.code)) strike();
     };
+    const onVisibilityChange = () => {
+      if (!document.hidden) lastTime = 0;
+    };
     const onPointer = (event: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       const rx = (event.clientX - rect.left) / rect.width;
@@ -524,11 +544,13 @@ export function RooftopRun() {
       else launch();
     };
     window.addEventListener("keydown", onKey, { passive: false });
+    document.addEventListener("visibilitychange", onVisibilityChange);
     canvas.addEventListener("pointerdown", onPointer);
-    loop();
+    loop(0);
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("keydown", onKey);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       canvas.removeEventListener("pointerdown", onPointer);
       resetRef.current = () => undefined;
       startRef.current = () => undefined;
