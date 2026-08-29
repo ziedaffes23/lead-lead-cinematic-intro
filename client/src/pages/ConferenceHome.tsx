@@ -15,6 +15,7 @@ import "@/styles/single-screen-home.css";
 import "@/styles/mobile-layout.css";
 import "@/styles/homepage-final-fixes.css";
 import "@/styles/mobile-final-fixes.css";
+import "@/styles/layout-system.css";
 
 function pad(value: number) {
   return String(value).padStart(2, "0");

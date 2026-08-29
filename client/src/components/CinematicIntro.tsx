@@ -5,6 +5,7 @@ import { ConferenceFooter } from "@/components/ConferenceFooter";
 import type { CinematicCallbacks, CinematicHandle } from "@/game/scene";
 import type { CinematicPhase } from "@/game/cinematic";
 import "@/styles/cinematic.css";
+import "@/styles/layout-system.css";
 
 interface CinematicIntroProps { onIntroComplete?: () => void; reducedMotion?: boolean; }
 

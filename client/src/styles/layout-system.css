@@ -1,0 +1,826 @@
+/*
+ * Shared layout system
+ *
+ * This file is intentionally imported last by each active route. The project
+ * contains several historical visual passes; these rules provide one stable
+ * geometry layer while leaving the cinematic artwork and interactions intact.
+ */
+
+:root {
+  --layout-gutter: clamp(1rem, 3.8vw, 4.5rem);
+  --layout-max: 92rem;
+  --layout-line: rgba(161, 193, 207, 0.2);
+  --layout-panel: rgba(6, 21, 34, 0.78);
+  --layout-gold: #e7b764;
+  --layout-cream: #f3eee0;
+}
+
+html,
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100dvh;
+}
+
+.game-home,
+.game-page,
+.registration-site,
+.cinematic-shell {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+
+.game-home > :not(.game-home__background):not(.home-route-atmosphere),
+.game-page > :not(.cinematic-background):not(.route-entry-wipe):not(.route-pressure-lines),
+.registration-site > :not(.cinematic-background):not(.route-entry-wipe):not(.route-pressure-lines):not(.register-backdrop):not(.register-rails):not(.dossier-relic-route):not(.register-relic-trace) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Shared header */
+.conference-nav {
+  position: relative !important;
+  z-index: 20 !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(8rem, 1fr) auto !important;
+  align-items: center !important;
+  gap: clamp(0.8rem, 2.2vw, 2.5rem) !important;
+  width: min(calc(100% - 2 * var(--layout-gutter)), var(--layout-max)) !important;
+  min-height: 4.2rem !important;
+  margin: 0 auto !important;
+  padding: 0.75rem 0 !important;
+  border-bottom: 1px solid var(--layout-line) !important;
+}
+
+.conference-nav .game-brand {
+  display: inline-flex !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  gap: 0.7rem !important;
+  color: var(--layout-cream) !important;
+}
+
+.conference-nav .game-brand img {
+  flex: 0 0 auto !important;
+  width: clamp(2rem, 3vw, 3.15rem) !important;
+  height: clamp(2rem, 3vw, 3.15rem) !important;
+  object-fit: contain !important;
+}
+
+.conference-nav .game-brand span {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 0.15rem !important;
+}
+
+.conference-nav .game-brand b,
+.conference-nav .game-brand small {
+  display: block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.conference-nav .game-brand b {
+  color: var(--layout-cream) !important;
+  font-size: clamp(0.58rem, 0.7vw, 0.78rem) !important;
+  letter-spacing: 0.12em !important;
+}
+
+.conference-nav .game-brand small {
+  color: rgba(162, 200, 214, 0.72) !important;
+  font-size: clamp(0.42rem, 0.48vw, 0.58rem) !important;
+  letter-spacing: 0.1em !important;
+}
+
+.conference-nav .game-nav__status {
+  justify-self: start !important;
+  min-width: 0 !important;
+  color: rgba(189, 218, 224, 0.7) !important;
+  font-size: clamp(0.4rem, 0.5vw, 0.56rem) !important;
+  letter-spacing: 0.12em !important;
+  white-space: nowrap !important;
+}
+
+.conference-nav .game-nav__status i {
+  display: inline-block !important;
+  width: 0.42rem !important;
+  height: 0.42rem !important;
+  margin-right: 0.42rem !important;
+  border-radius: 50% !important;
+  background: #78e0a7 !important;
+  box-shadow: 0 0 0.7rem rgba(120, 224, 167, 0.8) !important;
+}
+
+.conference-nav .game-nav__status span {
+  margin-left: 0.25rem !important;
+  color: rgba(189, 218, 224, 0.45) !important;
+}
+
+.conference-nav .game-nav__links {
+  display: flex !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: clamp(0.55rem, 1.25vw, 1.35rem) !important;
+  overflow: visible !important;
+}
+
+.conference-nav .game-nav__links a,
+.conference-nav .game-nav__register {
+  flex: 0 0 auto !important;
+  color: rgba(209, 224, 225, 0.78) !important;
+  font-size: clamp(0.43rem, 0.55vw, 0.62rem) !important;
+  letter-spacing: 0.13em !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.conference-nav .game-nav__links a:hover,
+.conference-nav .game-nav__links a[aria-current="page"],
+.conference-nav .game-nav__register:hover,
+.conference-nav .game-nav__register[aria-current="page"] {
+  color: var(--layout-gold) !important;
+}
+
+.conference-nav .game-nav__register {
+  min-height: 2rem !important;
+  padding: 0.58rem 0.82rem !important;
+  border: 1px solid rgba(231, 183, 100, 0.72) !important;
+  background: rgba(231, 183, 100, 0.08) !important;
+}
+
+/* Home: stable two-column hero that becomes a readable stack. */
+.game-home--single-screen {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.game-home--single-screen > .world-hero {
+  display: grid !important;
+  flex: 1 1 auto !important;
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr) !important;
+  align-items: center !important;
+  gap: clamp(2rem, 7vw, 8rem) !important;
+  width: min(calc(100% - 2 * var(--layout-gutter)), 96rem) !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: clamp(3rem, 8vh, 6.5rem) 0 clamp(2.5rem, 6vh, 5rem) !important;
+}
+
+.world-hero__copy,
+.mission-console {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+.world-hero__copy {
+  width: min(100%, 42rem) !important;
+}
+
+.world-hero__copy h1 {
+  max-width: 7ch !important;
+  font-size: clamp(4.3rem, 8vw, 8.2rem) !important;
+  line-height: 0.82 !important;
+}
+
+.world-hero__facts {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.9rem 1.2rem !important;
+  width: 100% !important;
+}
+
+.world-hero__facts span {
+  min-width: 0 !important;
+}
+
+.world-hero__facts b {
+  overflow-wrap: anywhere !important;
+}
+
+.world-hero__actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.75rem !important;
+}
+
+.world-hero__actions > * {
+  min-width: min(100%, 14rem) !important;
+}
+
+.mission-console {
+  justify-self: end !important;
+  width: min(100%, 27rem) !important;
+  margin: 0 !important;
+}
+
+.game-home--single-screen > .conference-footer {
+  flex: 0 0 auto !important;
+}
+
+/* Shared content pages */
+.conference-section-page__main {
+  width: min(calc(100% - 2 * var(--layout-gutter)), var(--layout-max)) !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: clamp(4.5rem, 9vh, 7.5rem) 0 clamp(3.5rem, 8vh, 7rem) !important;
+}
+
+.conference-section-page__main .section-intro-row {
+  width: 100% !important;
+  max-width: none !important;
+  margin-bottom: clamp(2.2rem, 5vh, 4.5rem) !important;
+}
+
+.conference-section-page__main .section-intro-row h1 {
+  max-width: 14ch !important;
+  font-size: clamp(3.6rem, 6.4vw, 6.8rem) !important;
+  line-height: 0.9 !important;
+}
+
+.quest-cards,
+.skill-grid,
+.faction-grid,
+.leaderboard-grid,
+.readiness-grid {
+  width: 100% !important;
+  min-width: 0 !important;
+  align-items: stretch !important;
+}
+
+.quest-cards,
+.skill-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(0.8rem, 1.6vw, 1.5rem) !important;
+}
+
+.quest-card,
+.skill-node,
+.faction-card,
+.leaderboard-card,
+.readiness-card {
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.quest-card,
+.skill-node {
+  min-height: 13rem !important;
+}
+
+.faction-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: clamp(0.65rem, 1.15vw, 1.2rem) !important;
+}
+
+.faction-card,
+.faction-card__trigger {
+  width: 100% !important;
+  min-height: 15.5rem !important;
+}
+
+.faction-card__trigger {
+  min-width: 0 !important;
+}
+
+.leaderboard-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(0.8rem, 1.6vw, 1.5rem) !important;
+}
+
+.leaderboard-card {
+  min-height: 18rem !important;
+}
+
+.leaderboard-status,
+.leaderboard-empty {
+  width: 100% !important;
+  min-height: 13rem !important;
+}
+
+.readiness-layout {
+  display: grid !important;
+  grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr) !important;
+  align-items: start !important;
+  gap: clamp(1.2rem, 3vw, 3rem) !important;
+}
+
+.readiness-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.85rem !important;
+}
+
+.route-deck {
+  width: min(calc(100% - 2 * var(--layout-gutter)), var(--layout-max)) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  padding: clamp(3.4rem, 8vh, 6rem) 0 !important;
+}
+
+.route-deck__actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.8rem !important;
+}
+
+.route-deck__actions > * {
+  min-width: min(100%, 16rem) !important;
+}
+
+.conference-footer {
+  position: relative !important;
+  z-index: 3 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.6rem 1rem !important;
+  width: 100% !important;
+  min-height: 3.4rem !important;
+  padding: 1rem var(--layout-gutter) !important;
+  text-align: center !important;
+}
+
+.conference-footer span {
+  white-space: normal !important;
+}
+
+/* Rooftop trial: keep the canvas fluid and the briefing readable. */
+.game-page {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.trial-command-deck {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.55fr) !important;
+  align-items: end !important;
+  gap: clamp(1.5rem, 5vw, 5rem) !important;
+  width: min(calc(100% - 2 * var(--layout-gutter)), var(--layout-max)) !important;
+  margin: 0 auto !important;
+  padding: clamp(4rem, 8vh, 7rem) 0 clamp(2rem, 4vh, 3.5rem) !important;
+}
+
+.trial-command-deck__heading,
+.trial-command-deck__panel {
+  min-width: 0 !important;
+}
+
+.trial-command-deck__heading h1 {
+  max-width: 8ch !important;
+  font-size: clamp(3.9rem, 7.2vw, 7rem) !important;
+  line-height: 0.86 !important;
+}
+
+.trial-command-deck__panel {
+  width: 100% !important;
+}
+
+.game-chase-frame {
+  width: min(calc(100% - 2 * var(--layout-gutter)), var(--layout-max)) !important;
+  margin: 0 auto !important;
+}
+
+.rooftop-run,
+.game-frame {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.game-frame {
+  aspect-ratio: 960 / 440 !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.game-canvas {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  object-fit: cover !important;
+}
+
+.game-after {
+  width: min(calc(100% - 2 * var(--layout-gutter)), 42rem) !important;
+  margin: clamp(1.5rem, 4vh, 3rem) auto clamp(2.5rem, 5vh, 4rem) !important;
+  text-align: center !important;
+}
+
+/* Registration: predictable dossier columns and full-width controls. */
+.registration-site {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 0 1rem !important;
+}
+
+.registration-site .register-layout {
+  display: grid !important;
+  grid-template-columns: minmax(15rem, 0.58fr) minmax(0, 1.42fr) !important;
+  align-items: start !important;
+  gap: clamp(1.25rem, 4vw, 4rem) !important;
+  width: min(calc(100% - 2 * var(--layout-gutter)), var(--layout-max)) !important;
+  margin: 0 auto !important;
+  padding: clamp(3rem, 7vh, 6rem) 0 !important;
+}
+
+.registration-site .dossier-intro {
+  position: sticky !important;
+  top: 1.5rem !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.registration-site .dossier-intro h1 {
+  max-width: 9ch !important;
+  font-size: clamp(3rem, 5.6vw, 5.7rem) !important;
+  line-height: 0.9 !important;
+}
+
+.registration-site .dossier-panel {
+  min-width: 0 !important;
+  width: 100% !important;
+  padding: clamp(1.25rem, 3.2vw, 3rem) !important;
+}
+
+.registration-site .dossier-heading h2 {
+  max-width: 14ch !important;
+  font-size: clamp(2rem, 4.2vw, 4.2rem) !important;
+  line-height: 0.95 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.registration-site .registration-step,
+.registration-site form {
+  min-width: 0 !important;
+}
+
+.registration-site .form-grid.two {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 1rem !important;
+}
+
+.registration-site .form-grid.two > label,
+.registration-site .attachment-grid > label {
+  min-width: 0 !important;
+}
+
+.registration-site input,
+.registration-site select,
+.registration-site textarea {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.registration-site .attachment-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.8rem !important;
+}
+
+.registration-site .registration-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+}
+
+.registration-site .registration-actions > * {
+  min-width: min(100%, 11rem) !important;
+}
+
+.registration-site > .conference-footer {
+  width: 100% !important;
+  max-width: none !important;
+  margin: auto 0 0 !important;
+}
+
+/* Narrow layout breakpoints */
+@media (max-width: 960px) {
+  .conference-nav {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    gap: 0.85rem 1.3rem !important;
+  }
+
+  .conference-nav .game-nav__links {
+    grid-column: 1 / -1 !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    padding-top: 0.25rem !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  .conference-nav .game-nav__links::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .conference-nav .game-nav__links a,
+  .conference-nav .game-nav__register {
+    display: inline-flex !important;
+  }
+
+  .game-home--single-screen > .world-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.75fr) !important;
+    gap: 2rem !important;
+  }
+
+  .quest-cards,
+  .skill-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .faction-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .registration-site .register-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .registration-site .dossier-intro {
+    position: relative !important;
+    top: auto !important;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --layout-gutter: 1rem;
+  }
+
+  .conference-nav {
+    min-height: 0 !important;
+    padding: 0.7rem 0 0.6rem !important;
+  }
+
+  .conference-nav .game-nav__status {
+    justify-self: end !important;
+    font-size: 0.4rem !important;
+  }
+
+  .conference-nav .game-nav__links {
+    gap: 1rem !important;
+  }
+
+  .conference-nav .game-nav__links a,
+  .conference-nav .game-nav__register {
+    font-size: 0.48rem !important;
+  }
+
+  .game-home--single-screen {
+    min-height: 100dvh !important;
+  }
+
+  .game-home--single-screen > .world-hero {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    align-content: start !important;
+    width: min(calc(100% - 2rem), 42rem) !important;
+    padding: 3.5rem 0 2.5rem !important;
+  }
+
+  .world-hero__copy h1 {
+    font-size: clamp(3.9rem, 16vw, 6.2rem) !important;
+  }
+
+  .world-hero__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.8rem !important;
+  }
+
+  .world-hero__actions,
+  .route-deck__actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .world-hero__actions > *,
+  .route-deck__actions > * {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .mission-console {
+    justify-self: stretch !important;
+    width: 100% !important;
+    margin-top: 0.75rem !important;
+  }
+
+  .conference-section-page__main,
+  .route-deck {
+    width: min(calc(100% - 2rem), 42rem) !important;
+  }
+
+  .conference-section-page__main {
+    padding: 3.7rem 0 3.5rem !important;
+  }
+
+  .conference-section-page__main .section-intro-row {
+    margin-bottom: 2rem !important;
+  }
+
+  .conference-section-page__main .section-intro-row h1 {
+    max-width: 10ch !important;
+    font-size: clamp(2.8rem, 12vw, 4.8rem) !important;
+  }
+
+  .quest-cards,
+  .skill-grid,
+  .readiness-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .faction-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.65rem !important;
+  }
+
+  .faction-card,
+  .faction-card__trigger {
+    min-height: 12rem !important;
+  }
+
+  .leaderboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .readiness-layout,
+  .trial-command-deck {
+    grid-template-columns: 1fr !important;
+  }
+
+  .route-deck {
+    padding: 3.5rem 0 !important;
+  }
+
+  .trial-command-deck {
+    width: min(calc(100% - 2rem), 42rem) !important;
+    padding: 3.7rem 0 2rem !important;
+  }
+
+  .trial-command-deck__heading h1 {
+    font-size: clamp(3.4rem, 14vw, 5.5rem) !important;
+  }
+
+  .game-chase-frame {
+    width: min(calc(100% - 2rem), 42rem) !important;
+  }
+
+  .game-frame {
+    aspect-ratio: 1 / 0.68 !important;
+  }
+
+  .registration-site .register-layout {
+    width: min(calc(100% - 2rem), 42rem) !important;
+    padding: 2.8rem 0 2rem !important;
+  }
+
+  .registration-site .dossier-intro h1 {
+    max-width: 10ch !important;
+    font-size: clamp(2.8rem, 12vw, 4.8rem) !important;
+  }
+
+  .registration-site .form-grid.two,
+  .registration-site .attachment-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .registration-site .registration-actions {
+    align-items: stretch !important;
+    flex-direction: column-reverse !important;
+  }
+
+  .registration-site .registration-actions > * {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .registration-site .dossier-progress {
+    gap: 0.45rem !important;
+  }
+
+  .registration-site .dossier-progress em {
+    min-width: 1rem !important;
+  }
+
+  .conference-footer {
+    min-height: 3rem !important;
+    padding: 0.8rem 1rem !important;
+    font-size: 0.42rem !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .conference-nav .game-brand b {
+    font-size: 0.5rem !important;
+  }
+
+  .conference-nav .game-brand small,
+  .conference-nav .game-nav__status {
+    font-size: 0.36rem !important;
+  }
+
+  .conference-nav .game-nav__links {
+    gap: 0.78rem !important;
+  }
+
+  .conference-nav .game-nav__links a,
+  .conference-nav .game-nav__register {
+    font-size: 0.42rem !important;
+  }
+
+  .world-hero__facts {
+    grid-template-columns: 1fr !important;
+  }
+
+  .faction-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .faction-card,
+  .faction-card__trigger {
+    min-height: 13rem !important;
+  }
+
+  .game-frame {
+    aspect-ratio: 1 / 0.8 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conference-nav *,
+  .game-home *,
+  .game-page *,
+  .registration-site * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Intro route: keep the canvas, controls, reveal, and compact footer within the viewport. */
+.cinematic-shell {
+  isolation: isolate;
+  background: #05080d;
+}
+
+.cinematic-stage,
+.cinematic-vignette,
+.cinematic-motion-lines,
+.cinematic-relic-signal,
+.cinematic-impact {
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+.cinematic-stage {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cinematic-controls {
+  position: absolute !important;
+  z-index: 20 !important;
+  top: max(1rem, env(safe-area-inset-top)) !important;
+  right: var(--layout-gutter) !important;
+}
+
+.cinematic-skip {
+  min-height: 2.4rem !important;
+  padding: 0.65rem 0.85rem !important;
+}
+
+.cinematic-reveal {
+  position: absolute !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 5rem var(--layout-gutter) 5rem !important;
+}
+
+.presentation-lockup {
+  width: min(100%, 42rem) !important;
+  text-align: center !important;
+}
+
+.cinematic-shell > .conference-footer {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+}
