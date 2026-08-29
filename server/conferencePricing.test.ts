@@ -22,10 +22,11 @@ describe("conference pricing", () => {
     expect(getContribution("Tunisian", "EB")).toMatchObject({ price: 240, currency: "TND" });
   });
 
-  it("adds a 50 TND single-room surcharge", () => {
-    expect(getContribution("Tunisian", "MMB", true)).toMatchObject({ price: 210, currency: "TND" });
-    expect(getContribution("Tunisian", "EB", true)).toMatchObject({ price: 290, currency: "TND" });
-    expect(getContribution("Tunisian", "MMB", true)?.note).toContain("+50 TND");
+  it("adds track-specific single-room surcharges", () => {
+    expect(getContribution("Tunisian", "MMB", true)).toMatchObject({ price: 260, currency: "TND" });
+    expect(getContribution("Tunisian", "EB", true)).toMatchObject({ price: 390, currency: "TND" });
+    expect(getContribution("Tunisian", "MMB", true)?.note).toContain("+100 TND");
+    expect(getContribution("Tunisian", "EB", true)?.note).toContain("+150 TND");
   });
 
   it("does not calculate a contribution for an incomplete or non-Tunisian selection", () => {

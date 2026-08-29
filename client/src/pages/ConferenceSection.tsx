@@ -28,10 +28,10 @@ function FactionCard({ faction, index, active, onOpen, onToggle, onClose }: { fa
         <span className="faction-card__index">{pad(index + 1)}</span>
         <span className={`faction-card__logo faction-card__logo--${faction.logoTreatment}`}><img src={faction.logo} alt="" /></span>
         <strong>{faction.name}</strong>
-        <span className="faction-card__slogan" lang={faction.id === "bullaregia" ? "en" : "ar"}>{faction.slogan}</span>
         <b aria-hidden="true">+</b>
       </button>
       <div className="faction-card__info" id={profileId} aria-hidden={!active} style={{ opacity: active ? 1 : 0, pointerEvents: active ? "auto" : "none", transform: `translateY(${active ? "0" : ".7rem"})` }}>
+        <p className="faction-card__slogan" lang={faction.id === "bullaregia" ? "en" : "ar"}>{faction.slogan}</p>
         <span className="faction-card__since">{faction.established}</span>
       </div>
     </article>
