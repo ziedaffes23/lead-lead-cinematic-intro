@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CinematicIntro } from "@/components/CinematicIntro";
 import { ConferenceHeader } from "@/components/ConferenceHeader";
+import "@/styles/conference-navigation.css";
 import "@/styles/mobile-layout.css";
 import "@/styles/mobile-final-fixes.css";
 
