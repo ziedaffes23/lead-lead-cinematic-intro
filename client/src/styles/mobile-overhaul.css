@@ -790,3 +790,65 @@
     margin-left: auto !important;
   }
 }
+
+/* Mobile game focus: keep the playable trial primary and remove duplicate page chrome. */
+@media (max-width: 760px) {
+  .game-page .trial-command-deck {
+    display: block !important;
+    margin-top: 0.7rem !important;
+    margin-bottom: 0.55rem !important;
+    padding: 0.7rem 0.8rem !important;
+    border-top: 1px solid rgba(231, 183, 100, 0.34);
+    border-bottom: 1px solid rgba(158, 216, 244, 0.2);
+    background: rgba(4, 13, 22, 0.58);
+  }
+
+  .game-page .trial-command-deck__heading {
+    display: block !important;
+  }
+
+  .game-page .trial-command-deck__heading h1 {
+    max-width: 11ch !important;
+    margin: 0 !important;
+    font-size: clamp(2.45rem, 12vw, 4rem) !important;
+    line-height: 0.84 !important;
+  }
+
+  .game-page .trial-command-deck__panel {
+    display: none !important;
+  }
+
+  .game-page .game-chase-frame {
+    margin-top: 0 !important;
+  }
+
+  .game-page .game-control-guide {
+    display: none !important;
+  }
+
+  .game-page .game-controls {
+    margin-top: 0.7rem !important;
+  }
+
+  .game-page .game-after {
+    display: none !important;
+  }
+
+  .game-page .game-overlay span {
+    display: -webkit-box;
+    max-height: 2.8em;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (max-width: 420px) {
+  .game-page .trial-command-deck {
+    padding: 0.6rem 0.7rem !important;
+  }
+
+  .game-page .trial-command-deck__heading h1 {
+    font-size: clamp(2.25rem, 11.5vw, 3.5rem) !important;
+  }
+}

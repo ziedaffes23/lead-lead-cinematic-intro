@@ -30,6 +30,14 @@ describe("mobile responsive contract", () => {
     expect(css).toContain(".conference-section-page--mirage .leaderboard-grid");
   });
 
+  it("keeps the mobile game focused on the playable trial", () => {
+    const css = read("client/src/styles/mobile-overhaul.css");
+    expect(css).toContain(".game-page .trial-command-deck__panel");
+    expect(css).toContain("display: none !important");
+    expect(css).toContain(".game-page .game-control-guide");
+    expect(css).toContain(".game-page .game-controls");
+  });
+
   it("keeps mobile route headers full-bleed while content remains inset", () => {
     const css = read("client/src/styles/mobile-layout.css");
     expect(css).toContain(".game-page .conference-nav");
