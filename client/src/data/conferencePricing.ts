@@ -1,50 +1,38 @@
-export type ConferenceNationality = "" | "Tounsi" | "Other";
-export type ConferencePosition = "" | "MMB" | "EB";
+export type ConferenceNationality = "" | "Tounsi";
+export type ConferenceTrack = "" | "MMB" | "EB";
 
 export const TUNISIAN_MMB_TND = 160;
 export const TUNISIAN_EB_TND = 240;
-export const INTERNATIONAL_MMB_EUR = 65;
-export const INTERNATIONAL_EB_EUR = 90;
-export const SINGLE_ROOM_SUPPLEMENT_TND = 50;
-export const SINGLE_ROOM_SUPPLEMENT_EUR = 20;
+export const ACCOMMODATION_PER_NIGHT_TND = 80;
+export const MMB_DURATION_DAYS = 3;
+export const EB_DURATION_DAYS = 4;
 
 export type Contribution = {
   price: number;
-  currency: "TND" | "EUR";
+  currency: "TND";
   note: string;
 };
 
 export function getContribution(
   nationality: ConferenceNationality,
-  position: ConferencePosition,
+  track: ConferenceTrack,
   singleRoom = false,
 ): Contribution | null {
-  if (!nationality || !position) return null;
+  if (nationality !== "Tounsi" || !track) return null;
 
-  if (nationality === "Other") {
-    const basePrice = position === "MMB" ? INTERNATIONAL_MMB_EUR : INTERNATIONAL_EB_EUR;
-    const roomSupplement = singleRoom ? SINGLE_ROOM_SUPPLEMENT_EUR : 0;
-    const price = basePrice + roomSupplement;
-    const roomNote = singleRoom
-      ? ` Single room supplement: +${SINGLE_ROOM_SUPPLEMENT_EUR} EUR.`
-      : " Shared room selected.";
-    return {
-      price,
-      currency: "EUR",
-      note: `EP / international ${position} package: ${basePrice} EUR for all three days.${roomNote}`,
-    };
-  }
-
-  const basePrice = position === "MMB" ? TUNISIAN_MMB_TND : TUNISIAN_EB_TND;
-  const roomSupplement = singleRoom ? SINGLE_ROOM_SUPPLEMENT_TND : 0;
-  const price = basePrice + roomSupplement;
+  const isMmb = track === "MMB";
+  const basePrice = isMmb ? TUNISIAN_MMB_TND : TUNISIAN_EB_TND;
+  const durationDays = isMmb ? MMB_DURATION_DAYS : EB_DURATION_DAYS;
+  const accommodationNights = Math.max(1, durationDays - 1);
+  const accommodationTotal = accommodationNights * ACCOMMODATION_PER_NIGHT_TND;
+  const price = basePrice + (singleRoom ? accommodationTotal : 0);
   const roomNote = singleRoom
-    ? ` Single room supplement: +${SINGLE_ROOM_SUPPLEMENT_TND} TND.`
-    : " Shared room selected.";
+    ? ` Single room accommodation: ${ACCOMMODATION_PER_NIGHT_TND} TND / per night × ${accommodationNights} nights (+${accommodationTotal} TND).`
+    : ` Shared room selected. Single room accommodation is ${ACCOMMODATION_PER_NIGHT_TND} TND / per night.`;
 
   return {
     price,
     currency: "TND",
-    note: `Tunisian ${position} package: ${basePrice} TND.${roomNote}`,
+    note: `Tunisian ${track} package: ${basePrice} TND for ${durationDays} days.${roomNote}`,
   };
 }

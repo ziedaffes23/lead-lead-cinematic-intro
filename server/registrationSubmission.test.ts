@@ -1,0 +1,58 @@
+import { afterEach, describe, expect, it } from "vitest";
+import { submitRegistrationToSheets, type RegistrationSubmissionInput } from "./registrationSubmission";
+
+const originalEndpoint = process.env.VITE_SHEETS_WEB_APP_URL;
+const originalFetch = globalThis.fetch;
+
+const input: RegistrationSubmissionInput = {
+  firstName: "Foulen",
+  lastName: "Fouleni",
+  cin: "12345678",
+  lc: "LC Thyna",
+  phoneCountry: "+216",
+  phone: "55111222",
+  email: "foulen@example.com",
+  nationality: "Tounsi",
+  track: "MMB",
+  position: "Manager",
+  singleRoom: false,
+  department: "MKT — Marketing",
+  allergies: "None",
+  note: "None",
+  price: 160,
+  currency: "TND",
+  photoUrl: "https://storage.example.com/photo.jpg",
+  photoName: "photo.jpg",
+  cvUrl: "https://storage.example.com/cv.pdf",
+  cvName: "cv.pdf",
+  identityUrl: "https://storage.example.com/identity.pdf",
+  identityName: "identity.pdf",
+};
+
+afterEach(() => {
+  if (originalEndpoint === undefined) delete process.env.VITE_SHEETS_WEB_APP_URL;
+  else process.env.VITE_SHEETS_WEB_APP_URL = originalEndpoint;
+  globalThis.fetch = originalFetch;
+});
+
+describe("registration sheet submission bridge", () => {
+  it("posts the validated payload server-side and returns the confirmation", async () => {
+    process.env.VITE_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/test/exec";
+    globalThis.fetch = async (url, init) => {
+      expect(String(url)).toBe(process.env.VITE_SHEETS_WEB_APP_URL);
+      expect(init?.method).toBe("POST");
+      expect(init?.headers).toEqual({ "Content-Type": "text/plain;charset=utf-8" });
+      expect(JSON.parse(String(init?.body))).toMatchObject({ track: "MMB", position: "Manager" });
+      return new Response(JSON.stringify({ ok: true, row: 12 }), { status: 200 });
+    };
+
+    await expect(submitRegistrationToSheets(input)).resolves.toEqual({ ok: true, row: 12 });
+  });
+
+  it("surfaces an explicit endpoint rejection instead of returning a false receipt", async () => {
+    process.env.VITE_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/test/exec";
+    globalThis.fetch = async () => new Response(JSON.stringify({ ok: false, error: "Missing required field: track." }), { status: 200 });
+
+    await expect(submitRegistrationToSheets(input)).rejects.toMatchObject({ code: "BAD_GATEWAY", message: "Missing required field: track." });
+  });
+});

@@ -9,6 +9,10 @@ describe("registration Apps Script contract", () => {
     expect(endpoint).toContain('payload.email || payload.aiesecEmail');
     expect(endpoint).toContain('"Phone country"');
     expect(endpoint).toContain('"Single room"');
+    expect(endpoint).toContain('"Track"');
+    expect(endpoint).toContain('ALLOWED_TRACKS');
+    expect(endpoint).toContain('ALLOWED_POSITIONS');
+    expect(endpoint).toContain("Only Tunisian registrations are currently accepted.");
     expect(endpoint).toContain('"Identity Document URL"');
     expect(endpoint).toContain('"Identity Document Name"');
     expect(endpoint).toContain("valid email address");

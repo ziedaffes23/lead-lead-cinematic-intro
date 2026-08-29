@@ -59,7 +59,7 @@ export default function ConferenceHome() {
           <p className="world-hero__directive"><span>ANSWER THE CALL</span><i aria-hidden="true" /></p>
           <div className="world-hero__facts" aria-label="Event facts">
             <span><small>STARTS</small><b>10 SEP 2026</b></span>
-            <span><small>DURATION</small><b>3 DAYS</b></span>
+            <span><small>MMB DURATION</small><b>3 DAYS</b></span><span><small>EB DURATION</small><b>4 DAYS</b></span>
             <span><small>HOST</small><b>LC THYNA</b></span>
             <span><small>LOCATION</small><b>AMIR PALACE</b></span>
           </div>

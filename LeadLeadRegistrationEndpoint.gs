@@ -12,7 +12,7 @@ const DRIVE_FOLDER_ID = "1W9D3eZ6p2X6Y4qaOO-JzDr1MJtwceCUR";
 
 const REQUIRED_HEADERS = [
   "Timestamp", "First name", "Last name", "CIN number", "Phone country", "Phone",
-  "Email", "Local committee", "Nationality", "Other nationality", "Position",
+  "Email", "Local committee", "Nationality", "Other nationality", "Track", "Position",
   "Single room", "Department", "Price", "Currency", "Allergies", "Note",
   "Profile Photo URL", "Profile Photo Name", "CV URL", "CV Name",
   "Identity Document URL", "Identity Document Name",
@@ -21,6 +21,9 @@ const REQUIRED_HEADERS = [
 const HEADER_ALIASES = {
   Email: ["Email", "AIESEC email"],
 };
+
+const ALLOWED_TRACKS = ["MMB", "EB"];
+const ALLOWED_POSITIONS = ["Manager", "Team Leader", "LCVP", "LCP"];
 
 const LEADERBOARD_LCS = [
   "LC Thyna", "LC University", "SU Bullaregia", "LC Tacapes", "LC Ruspina", "LC Carthage",
@@ -64,7 +67,8 @@ function doPost(event) {
       "AIESEC email": email,
       "Local committee": cleanText(payload.lc),
       "Nationality": cleanText(payload.nationality),
-      "Other nationality": cleanText(payload.nationalityDetail),
+      "Other nationality": "",
+      "Track": cleanText(payload.track),
       "Position": cleanText(payload.position),
       "Single room": payload.singleRoom === true || String(payload.singleRoom).toLowerCase() === "true" ? "Yes" : "No",
       "Department": cleanText(payload.department),
@@ -94,13 +98,14 @@ function parsePayload(event) {
 }
 
 function validatePayload(payload) {
-  const required = ["firstName", "lastName", "cin", "phoneCountry", "phone", "email", "lc", "nationality", "position", "department", "price", "currency", "allergies", "note", "photoUrl", "cvUrl", "identityUrl"];
+  const required = ["firstName", "lastName", "cin", "phoneCountry", "phone", "email", "lc", "nationality", "track", "position", "department", "price", "currency", "allergies", "note", "photoUrl", "cvUrl", "identityUrl"];
   required.forEach((key) => {
     if (payload[key] === undefined || payload[key] === null || String(payload[key]).trim() === "") throw new Error(`Missing required field: ${key}.`);
   });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(String(payload.email).trim())) throw new Error("Email must be a valid email address.");
-  if (payload.nationality === "Other" && !cleanText(payload.nationalityDetail)) throw new Error("Nationality detail is required when nationality is Other.");
-  if (payload.singleRoom === true && payload.nationality === "Other") throw new Error("Single-room selection is available for local packages only.");
+  if (payload.nationality !== "Tounsi") throw new Error("Only Tunisian registrations are currently accepted.");
+  if (!ALLOWED_TRACKS.includes(cleanText(payload.track))) throw new Error("Select a valid conference track.");
+  if (!ALLOWED_POSITIONS.includes(cleanText(payload.position))) throw new Error("Select a valid position.");
 }
 
 function ensureHeaders(sheet) {

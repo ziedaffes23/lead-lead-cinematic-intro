@@ -152,3 +152,17 @@
 .cinematic-shell.is-static .reveal-streak { animation: none; opacity: .22; }
 .cinematic-shell.is-static .enter-button { margin-top: .85rem; }
 @media (max-width: 600px) { .cinematic-skip { top: 1rem; right: 1rem; font-size: .46rem; } }
+
+.cinematic-controls { position: absolute; z-index: 10; top: clamp(1rem, 3vw, 2.2rem); right: clamp(1rem, 3vw, 2.8rem); display: flex; align-items: center; gap: .55rem; }
+.cinematic-controls button { cursor: pointer; }
+.cinematic-music { display: inline-flex; align-items: center; gap: .45rem; padding: .7rem .8rem; border: 1px solid rgba(158, 216, 244, .38); background: rgba(5, 8, 13, .5); color: rgba(241, 238, 228, .78); font: 500 .52rem/1 "IBM Plex Mono", monospace; letter-spacing: .1em; transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease; }
+.cinematic-music span { color: #9ed7ed; font-size: .72rem; line-height: 1; }
+.cinematic-music:hover:not(:disabled), .cinematic-music:focus-visible { border-color: #9ed7ed; background: rgba(77, 155, 195, .16); color: #f1eee4; transform: translateY(-1px); }
+.cinematic-music:focus-visible, .cinematic-skip:focus-visible { outline: 2px solid #f1d58c; outline-offset: 4px; }
+.cinematic-music:disabled { cursor: not-allowed; opacity: .52; }
+.cinematic-controls .cinematic-skip { position: static; }
+@media (max-width: 600px) {
+  .cinematic-controls { top: 1rem; right: 1rem; gap: .35rem; }
+  .cinematic-music { padding: .65rem .55rem; font-size: .44rem; letter-spacing: .07em; }
+  .cinematic-controls .cinematic-skip { font-size: .44rem; }
+}

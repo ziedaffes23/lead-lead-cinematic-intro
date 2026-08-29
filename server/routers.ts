@@ -5,6 +5,7 @@ import { publicProcedure, router } from "./_core/trpc";
 import { registrationUploadsInput, uploadRegistrationDocuments } from "./registrationUploads";
 import { normalizeLocalCommittee, recordLeaderboardRegistration } from "./registrationLeaderboard";
 import { getSheetLeaderboard } from "./sheetsLeaderboard";
+import { registrationSubmissionInput, submitRegistrationToSheets } from "./registrationSubmission";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -24,6 +25,7 @@ export const appRouter = router({
 
   registration: router({
     uploadDocuments: publicProcedure.input(registrationUploadsInput).mutation(({ input, ctx }) => uploadRegistrationDocuments(input, ctx.req)),
+    submit: publicProcedure.input(registrationSubmissionInput).mutation(({ input }) => submitRegistrationToSheets(input)),
     leaderboard: publicProcedure.query(() => getSheetLeaderboard()),
     record: publicProcedure.input(z.object({ lc: z.string().min(1), email: z.string().email() })).mutation(async ({ input }) => {
       const lc = normalizeLocalCommittee(input.lc);

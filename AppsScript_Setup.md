@@ -4,6 +4,9 @@ This script receives registrations from the website and appends each registratio
 
 | Sheet column | Website payload key |
 |---|---|
+| Nationality | `nationality` (`Tounsi` only) |
+| Track | `track` (`MMB` or `EB`) |
+| Position | `position` (`Manager`, `Team Leader`, `LCVP`, or `LCP`) |
 | Profile Photo URL | `photoUrl` |
 | CV URL | `cvUrl` |
 
@@ -17,15 +20,15 @@ Next, select **Deploy → New deployment**. Choose **Web app**, set **Execute as
 
 ## Connect the website
 
-Send the `/exec` URL here. Add it as the protected `VITE_SHEETS_WEB_APP_URL` setting. The website first uploads the files to its temporary HTTPS storage proxy, then sends those links to Apps Script. Apps Script copies each file into the configured Drive folder, changes sharing to **Anyone with the link — Viewer**, writes the Drive URLs to the sheet, and returns them to the website for display in the registration receipt.
+Send the `/exec` URL here. Add it as the protected `VITE_SHEETS_WEB_APP_URL` setting. The website first uploads the files to its temporary HTTPS storage proxy, then sends those links to the same-origin server bridge, which forwards the registration to Apps Script. This avoids browser cross-origin submission failures. Apps Script copies each file into the configured Drive folder, changes sharing to **Anyone with the link — Viewer**, writes the Drive URLs to the sheet, and returns them to the website for display in the registration receipt.
 
 ## Expected sheet header row
 
-The script expects the following headers in **Sheet1**, in any order: `Timestamp`, `First name`, `Last name`, `CIN number`, `Phone`, `AIESEC email`, `Local committee`, `Nationality`, `Other nationality`, `Position`, `Department`, `Price`, `Currency`, `Allergies`, `Note`, `Profile Photo URL`, and `CV URL`.
+The script expects the following headers in **Sheet1**, in any order: `Timestamp`, `First name`, `Last name`, `CIN number`, `Phone country`, `Phone`, `Email`, `AIESEC email`, `Local committee`, `Nationality`, `Other nationality`, `Track`, `Position`, `Single room`, `Department`, `Price`, `Currency`, `Allergies`, `Note`, `Profile Photo URL`, `Profile Photo Name`, `CV URL`, `CV Name`, `Identity Document URL`, and `Identity Document Name`.
 
 ## Safety checks
 
-The script rejects incomplete registrations, invalid email addresses, missing nationality detail when `Other` is selected, and non-HTTPS attachment links. If Drive cannot be reached, a file cannot be downloaded, or the folder cannot be accessed, the registration is rejected instead of creating a sheet row without its documents. If a column is renamed or deleted, it returns an error instead of writing a misaligned row.
+The script rejects incomplete registrations, invalid email addresses, non-Tunisian nationality, invalid tracks or positions, and non-HTTPS attachment links. If Drive cannot be reached, a file cannot be downloaded, or the folder cannot be accessed, the registration is rejected instead of creating a sheet row without its documents. If a column is renamed or deleted, it returns an error instead of writing a misaligned row.
 
 ## References
 

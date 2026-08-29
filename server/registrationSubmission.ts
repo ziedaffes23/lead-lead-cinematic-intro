@@ -1,0 +1,62 @@
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import { confirmSheetsDelivery } from "@shared/sheetsDelivery";
+
+const publicUrl = z.string().url().refine((value) => value.startsWith("https://"), "Document URLs must use HTTPS.");
+
+export const registrationSubmissionInput = z.object({
+  firstName: z.string().trim().min(1),
+  lastName: z.string().trim().min(1),
+  cin: z.string().trim().min(1),
+  lc: z.string().trim().min(1),
+  phoneCountry: z.string().trim().min(1),
+  phone: z.string().trim().min(1),
+  email: z.string().trim().email(),
+  nationality: z.literal("Tounsi"),
+  track: z.enum(["MMB", "EB"]),
+  position: z.enum(["Manager", "Team Leader", "LCVP", "LCP"]),
+  singleRoom: z.boolean(),
+  department: z.string().trim().min(1),
+  allergies: z.string().trim().min(1),
+  note: z.string().trim().min(1),
+  price: z.number().int().nonnegative(),
+  currency: z.literal("TND"),
+  photoUrl: publicUrl,
+  photoName: z.string().trim().min(1),
+  cvUrl: publicUrl,
+  cvName: z.string().trim().min(1),
+  identityUrl: publicUrl,
+  identityName: z.string().trim().min(1),
+});
+
+export type RegistrationSubmissionInput = z.infer<typeof registrationSubmissionInput>;
+
+export async function submitRegistrationToSheets(input: RegistrationSubmissionInput) {
+  const endpoint = process.env.VITE_SHEETS_WEB_APP_URL || process.env.SHEETS_WEB_APP_URL;
+  if (!endpoint) {
+    throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Registration setup is incomplete. Please contact the organising team before retrying." });
+  }
+
+  let url: URL;
+  try {
+    url = new URL(endpoint);
+    if (url.protocol !== "https:" || !url.pathname.endsWith("/exec")) throw new Error("Invalid registration endpoint.");
+  } catch {
+    throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Registration setup is incomplete. Please contact the organising team before retrying." });
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(input),
+      signal: AbortSignal.timeout(30_000),
+    });
+    const confirmation = confirmSheetsDelivery(response.ok, await response.text());
+    return confirmation;
+  } catch (error) {
+    if (error instanceof TRPCError) throw error;
+    const message = error instanceof Error ? error.message : "The registration service could not confirm your record.";
+    throw new TRPCError({ code: "BAD_GATEWAY", message });
+  }
+}
