@@ -921,3 +921,247 @@ body {
     padding: 1rem;
   }
 }
+
+/* Full-screen layout pass: let desktop pages use the available viewport instead of a narrow centered island. */
+:root {
+  --layout-gutter: clamp(1.25rem, 4vw, 6rem);
+  --layout-max: 120rem;
+}
+
+.conference-site,
+.game-home,
+.game-page,
+.cinematic-shell,
+.registration-site {
+  min-height: 100dvh !important;
+  overflow-x: clip !important;
+}
+
+.conference-section-page__main,
+.route-deck,
+.trial-command-deck,
+.game-chase-frame,
+.registration-site .register-layout,
+.game-home--single-screen > .world-hero {
+  width: min(calc(100% - 2 * var(--layout-gutter)), var(--layout-max)) !important;
+}
+
+.conference-section-page__main {
+  min-height: calc(100dvh - 4.5rem) !important;
+  padding-top: clamp(5rem, 10vh, 8.5rem) !important;
+  padding-bottom: clamp(4.5rem, 9vh, 8rem) !important;
+}
+
+.conference-section-page__main .section-intro-row {
+  align-items: end !important;
+}
+
+.faction-grid,
+.quest-cards,
+.skill-grid,
+.leaderboard-grid,
+.readiness-grid {
+  max-width: none !important;
+}
+
+.faction-card,
+.faction-card__trigger {
+  min-height: clamp(16rem, 25vh, 22rem) !important;
+}
+
+.route-deck {
+  min-height: calc(100dvh - 4.5rem) !important;
+  padding-top: clamp(5rem, 10vh, 8rem) !important;
+  padding-bottom: clamp(4rem, 9vh, 7rem) !important;
+}
+
+.trial-command-deck {
+  padding-top: clamp(5rem, 10vh, 8rem) !important;
+  padding-bottom: clamp(2.5rem, 5vh, 4.5rem) !important;
+}
+
+.game-chase-frame {
+  max-width: var(--layout-max) !important;
+}
+
+.game-frame {
+  min-height: clamp(24rem, 52vh, 42rem) !important;
+}
+
+.game-home--single-screen > .world-hero {
+  min-height: calc(100dvh - 4.5rem) !important;
+  max-width: var(--layout-max) !important;
+}
+
+/* Registration is a regular document page: no sticky sidebar, popup scroll, clipped card, or inner scroll area. */
+html:has(.registration-site),
+body:has(.registration-site) {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.registration-site {
+  display: block !important;
+  height: auto !important;
+  min-height: 100dvh !important;
+  padding: 0 0 3rem !important;
+  overflow: visible !important;
+}
+
+.registration-site .register-layout {
+  display: block !important;
+  max-width: var(--layout-max) !important;
+  margin: 0 auto !important;
+  padding: clamp(3rem, 8vh, 7rem) 0 clamp(4rem, 8vh, 7rem) !important;
+}
+
+.registration-site .dossier-intro {
+  position: relative !important;
+  top: auto !important;
+  max-width: none !important;
+  margin: 0 0 clamp(2rem, 5vw, 4rem) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+}
+
+.registration-site .dossier-intro::before,
+.registration-site .dossier-intro::after {
+  display: none !important;
+}
+
+.registration-site .dossier-intro h1 {
+  max-width: 12ch !important;
+  font-size: clamp(3.4rem, 7vw, 7rem) !important;
+}
+
+.registration-site .dossier-intro > p:not(.eyebrow) {
+  max-width: 48rem !important;
+  font-size: clamp(1rem, 1.4vw, 1.2rem) !important;
+}
+
+.registration-site .dossier-intro dl {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  max-width: none !important;
+  margin-top: clamp(1.5rem, 3vw, 2.8rem) !important;
+  border-top: 1px solid rgba(158, 216, 244, 0.28) !important;
+  border-bottom: 1px solid rgba(158, 216, 244, 0.18) !important;
+}
+
+.registration-site .dossier-intro dl > div {
+  display: grid !important;
+  gap: 0.5rem !important;
+  justify-content: start !important;
+  padding: 1rem 1.2rem !important;
+  border-right: 1px solid rgba(158, 216, 244, 0.16) !important;
+  border-bottom: 0 !important;
+}
+
+.registration-site .dossier-intro dl > div:last-child {
+  border-right: 0 !important;
+}
+
+.registration-site .dossier-intro dd {
+  text-align: left !important;
+  font-size: clamp(0.65rem, 0.9vw, 0.82rem) !important;
+}
+
+.registration-site .dossier-panel {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  padding: clamp(1.5rem, 4vw, 4.5rem) !important;
+  border: 1px solid rgba(158, 216, 244, 0.3) !important;
+  background: rgba(5, 20, 33, 0.72) !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  overflow: visible !important;
+}
+
+.registration-site .dossier-panel::before,
+.registration-site .dossier-panel::after {
+  display: none !important;
+}
+
+.registration-site .dossier-panel form,
+.registration-site .registration-step {
+  overflow: visible !important;
+}
+
+.registration-site .registration-step {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.registration-site .dossier-heading h2 {
+  max-width: none !important;
+  font-size: clamp(2.2rem, 5vw, 5rem) !important;
+}
+
+.registration-site .dossier-progress {
+  width: 100% !important;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem) !important;
+}
+
+@media (max-width: 720px) {
+  .conference-section-page__main,
+  .route-deck,
+  .trial-command-deck,
+  .game-chase-frame,
+  .registration-site .register-layout,
+  .game-home--single-screen > .world-hero {
+    width: min(calc(100% - 2rem), 56rem) !important;
+  }
+
+  .conference-section-page__main,
+  .route-deck {
+    min-height: 0 !important;
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  .game-home--single-screen > .world-hero {
+    min-height: 0 !important;
+  }
+
+  .registration-site .register-layout {
+    padding-top: 3rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  .registration-site .dossier-intro dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .registration-site .dossier-intro dl > div:nth-child(2) {
+    border-right: 0 !important;
+  }
+
+  .registration-site .dossier-intro dl > div:nth-child(-n + 2) {
+    border-bottom: 1px solid rgba(158, 216, 244, 0.16) !important;
+  }
+
+  .registration-site .dossier-panel {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .registration-site .dossier-intro dl {
+    grid-template-columns: 1fr !important;
+  }
+
+  .registration-site .dossier-intro dl > div {
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(158, 216, 244, 0.16) !important;
+  }
+
+  .registration-site .dossier-intro dl > div:last-child {
+    border-bottom: 0 !important;
+  }
+}
