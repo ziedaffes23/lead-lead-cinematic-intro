@@ -1165,3 +1165,42 @@ body:has(.registration-site) {
     border-bottom: 0 !important;
   }
 }
+
+/* Checkbox controls: keep consent inputs compact instead of inheriting full-width text-field geometry. */
+.registration-site .single-room-option,
+.registration-site .indemnity-consent {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  width: 100% !important;
+  cursor: pointer;
+}
+
+.registration-site .single-room-option input[type="checkbox"],
+.registration-site .indemnity-consent input[type="checkbox"] {
+  flex: 0 0 1.25rem !important;
+  width: 1.25rem !important;
+  min-width: 1.25rem !important;
+  max-width: 1.25rem !important;
+  height: 1.25rem !important;
+  min-height: 1.25rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid rgba(231, 183, 100, 0.85) !important;
+  border-radius: 0.15rem !important;
+  background: rgba(2, 11, 21, 0.9) !important;
+  appearance: auto !important;
+  accent-color: var(--layout-gold) !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.registration-site .single-room-option span,
+.registration-site .indemnity-consent span {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+.registration-site .indemnity-consent {
+  align-items: flex-start !important;
+}
