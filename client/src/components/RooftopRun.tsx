@@ -13,17 +13,13 @@ type Obstacle = {
   cleared?: boolean;
 };
 type Fragment = { x: number; y: number; taken?: boolean };
-type RooftopRunProps = {
-  startControlRef?: { current: () => void };
-};
-
 const WIDTH = 960;
 const HEIGHT = 440;
 const GROUND = HEIGHT - 76;
 const TARGET_FRAME_MS = 1000 / 60;
 const BEST_SCORE_KEY = "lead-lead-rooftop-best";
 
-export function RooftopRun({ startControlRef }: RooftopRunProps) {
+export function RooftopRun() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<GameState>("idle");
   const resetRef = useRef<() => void>(() => undefined);
@@ -32,6 +28,7 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
   const [canvasReady, setCanvasReady] = useState(false);
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
+  const [remainingLives, setRemainingLives] = useState(3);
 
   useEffect(() => {
     try {
@@ -67,6 +64,7 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
       canvas.dataset.slideActive = String(player.slide > 0);
       canvas.dataset.strikeActive = String(strikeFrames > 0);
       canvas.dataset.obstacleCount = String(obstacles.length);
+      canvas.dataset.lives = String(lives);
       if (lastAction) canvas.dataset.lastAction = lastAction;
     };
     const far = Array.from({ length: 18 }, () => Math.random());
@@ -83,6 +81,7 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
       distance = 0;
       fragments = 0;
       lives = 3;
+      setRemainingLives(3);
       speed = 7.3;
       nextSpawn = 110;
       strikeFrames = 0;
@@ -103,7 +102,6 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
       setState("playing");
     };
     startRef.current = beginRun;
-    if (startControlRef) startControlRef.current = beginRun;
     const launch = () => {
       if (stateRef.current !== "playing") return;
       if (player.jumps < 2) {
@@ -148,6 +146,7 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
     const fail = () => {
       if (invincible > 0) return;
       lives -= 1;
+      setRemainingLives(lives);
       invincible = 70;
       if (lives <= 0) {
         const result = Math.floor(distance / 10) + fragments * 12;
@@ -502,6 +501,7 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
       context.font = "600 15px monospace";
       context.fillText(`DISTANCE ${Math.floor(distance / 10)}m`, 20, 30);
       context.fillText(`FRAGMENTS ${fragments}`, 20, 52);
+      context.fillText(`LIVES ${lives}/3`, WIDTH - 142, 34);
       for (let index = 0; index < 3; index += 1) {
         context.globalAlpha = index < lives ? 1 : 0.22;
         context.fillStyle = "#c4dbe2";
@@ -558,7 +558,6 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
       canvas.removeEventListener("pointerdown", onPointer);
       resetRef.current = () => undefined;
       startRef.current = () => undefined;
-      if (startControlRef) startControlRef.current = () => undefined;
     };
   }, []);
 
@@ -584,7 +583,11 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
           aria-describedby="rooftop-control-guide"
         />
         {state !== "playing" && (
-          <div className="game-overlay">
+          <div
+            className={`game-overlay game-overlay--${state}`}
+            role="status"
+            aria-live="polite"
+          >
             <p>CHAPTER VI / THE TRIALS</p>
             <h2>
               {state === "over" ? "YOUR RUN ENDS HERE" : "ROOFTOPS OF THYNA"}
@@ -592,23 +595,46 @@ export function RooftopRun({ startControlRef }: RooftopRunProps) {
             <span>
               {state === "over"
                 ? `Score ${score} · Best ${best}`
-                : "Leap, double-jump, slide under beams, strike guards, and collect creed fragments."}
+                : "Use START GAME above to enter the route. Leap, double-jump, slide under beams, strike guards, and collect creed fragments."}
             </span>
+          </div>
+        )}
+        <div className="game-frame__hud">
+          <div
+            className="game-frame__lives"
+            aria-label={`${remainingLives} of 3 lives remaining`}
+          >
+            <span>LIVES</span>
+            <strong>{remainingLives}/3</strong>
+            <div aria-hidden="true">
+              {[0, 1, 2].map(index => (
+                <i
+                  className={index < remainingLives ? "is-full" : "is-empty"}
+                  key={index}
+                >
+                  ◇
+                </i>
+              ))}
+            </div>
+          </div>
+          {state !== "playing" && (
             <button
               type="button"
-              className="bronze-button"
+              className="game-frame__start"
               onClick={() => startRef.current()}
               disabled={!canvasReady}
             >
-              {canvasReady
-                ? state === "over"
-                  ? "RUN AGAIN"
-                  : "BEGIN THE RUN"
-                : "CALIBRATING…"}
+              <span>
+                {canvasReady
+                  ? state === "over"
+                    ? "RUN AGAIN"
+                    : "START GAME"
+                  : "CALIBRATING…"}
+              </span>
               <b>→</b>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <p className="game-control-guide" id="rooftop-control-guide">
         <span>KEYBOARD LOADOUT</span>

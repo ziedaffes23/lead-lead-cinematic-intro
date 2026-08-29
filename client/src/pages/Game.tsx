@@ -5,7 +5,6 @@ import { SiteMotion } from "@/components/SiteMotion";
 import { ConferenceHeader } from "@/components/ConferenceHeader";
 import { ConferenceFooter } from "@/components/ConferenceFooter";
 import { CINEMATIC_ASSETS } from "@/game/assets";
-import { useRef } from "react";
 import "@/styles/game.css";
 import "@/styles/motion.css";
 import "@/styles/cinematic-polish.css";
@@ -17,15 +16,13 @@ import "@/styles/rooftop-command-deck.css";
 import "@/styles/mobile-layout.css";
 import "@/styles/mobile-final-fixes.css";
 import "@/styles/layout-system.css";
-import "@/styles/trial-start-control.css";
+import "@/styles/game-lifecycle.css";
 import "@/styles/route-photo-background.css";
 
 // prettier-ignore
 const RegisterArrow = () => <>REGISTER <b>→</b></>;
 
 export default function Game() {
-  const startControlRef = useRef<() => void>(() => undefined);
-
   return (
     <main className="game-page chase-route chase-game cinematic-world-root">
       <CinematicBackground tone="trials" />
@@ -54,14 +51,6 @@ export default function Game() {
             <br />
             of <em>Thyna</em>
           </h1>
-          <button
-            className="trial-top-start"
-            type="button"
-            onClick={() => startControlRef.current()}
-          >
-            <span>START GAME</span>
-            <b>→</b>
-          </button>
         </div>
         <aside
           className="trial-command-deck__panel"
@@ -90,7 +79,7 @@ export default function Game() {
         </aside>
       </section>
       <div className="game-chase-frame" data-reveal>
-        <RooftopRun startControlRef={startControlRef} />
+        <RooftopRun />
       </div>
       <section className="game-after" data-reveal>
         <button
