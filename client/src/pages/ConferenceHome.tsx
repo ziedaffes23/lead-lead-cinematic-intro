@@ -63,7 +63,7 @@ export default function ConferenceHome() {
             <span><small>STARTS</small><b>10 SEP 2026</b></span>
             <span><small>MMB DURATION</small><b>3 DAYS</b></span><span><small>EB DURATION</small><b>4 DAYS</b></span>
             <span><small>HOST</small><b>LC THYNA</b></span>
-            <span><small>LOCATION</small><b>AMIR PALACE</b></span><span><small>ACCOMMODATION</small><b>80 TND PER NIGHT</b></span>
+            <span><small>LOCATION</small><b>AMIR PALACE</b></span><span><small>CREED COSTS</small><b>MMB 160 · EB 240 TND</b></span>
           </div>
           <div className="world-hero__actions">
             <button className="game-primary" type="button" onClick={() => openRegistration()}><span>START REGISTRATION</span><b>→</b></button>

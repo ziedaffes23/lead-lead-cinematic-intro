@@ -43,3 +43,20 @@
   .game-home .world-hero{padding-top:4.7rem!important}
   .registration-site .dossier-panel{padding:.8rem!important}
 }
+
+/* Shared mobile navigation: brand/status row plus a full-width scrollable link row. */
+@media(max-width:700px){
+  .conference-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;row-gap:.45rem!important}
+  .conference-nav .game-brand{min-width:0!important;display:flex!important;align-items:center!important;gap:.5rem!important}
+  .conference-nav .game-brand span{min-width:0!important;overflow:hidden!important}
+  .conference-nav .game-brand b,.conference-nav .game-brand small{display:block!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+  .conference-nav .game-nav__status{justify-self:end!important;margin:0!important;font-size:.36rem!important;white-space:nowrap!important}
+  .conference-nav .game-nav__links{grid-column:1/-1!important;display:flex!important;align-items:center!important;gap:.3rem!important;width:100%!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important;padding:.15rem 0 .25rem!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important}
+  .conference-nav .game-nav__links::-webkit-scrollbar{display:none!important}
+  .conference-nav .game-nav__links>a,.conference-nav .game-nav__links>button{display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:center!important;min-height:2.15rem!important;padding:.52rem .68rem!important;font-size:.44rem!important;letter-spacing:.09em!important;white-space:nowrap!important}
+  .conference-nav .game-nav__links .game-nav__register{margin-left:auto!important;padding-inline:.8rem!important;border-color:rgba(231,183,100,.7)!important}
+}
+@media(max-width:390px){
+  .conference-nav{row-gap:.35rem!important}
+  .conference-nav .game-nav__links>a,.conference-nav .game-nav__links>button{min-height:2rem!important;padding:.45rem .58rem!important;font-size:.4rem!important}
+}
