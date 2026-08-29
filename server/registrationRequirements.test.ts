@@ -19,9 +19,13 @@ describe("registration requirements and dark-only presentation", () => {
     expect(registerSource).toContain('placeholder="Foulen" required');
     expect(registerSource).toContain('placeholder="Fouléni" required');
     expect(registerSource).toContain('placeholder="Enter your CIN number" required');
+    expect(registerSource).toContain('inputMode="numeric" pattern="[0-9]*"');
+    expect(registerSource).toContain('CIN number must contain digits only.');
     expect(registerSource).toContain('<select required value={form.lc}');
     expect(registerSource).toContain('Country code<select value={form.phoneCountry}');
     expect(registerSource).toContain('inputMode="tel" required');
+    expect(registerSource).toContain('maxLength={8} pattern="[0-9]{8}"');
+    expect(registerSource).toContain('Phone number must contain exactly 8 digits.');
     expect(registerSource).toContain('CIN / passport');
     expect(registerSource).toContain('accept="image/jpeg,image/png,application/pdf,.pdf" required');
     expect(registerSource).toContain('accept="image/jpeg,image/png,image/webp" required');
