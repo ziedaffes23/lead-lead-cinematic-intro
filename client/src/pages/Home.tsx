@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 import { CinematicIntro } from "@/components/CinematicIntro";
-import { ConferenceHeader } from "@/components/ConferenceHeader";
-import "@/styles/conference-navigation.css";
-import "@/styles/mobile-layout.css";
-import "@/styles/mobile-final-fixes.css";
 
 export default function Home() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -28,5 +24,5 @@ export default function Home() {
   }, [skipIntro]);
 
   if (skipIntro) return null;
-  return <div className="intro-route"><ConferenceHeader current="home" /><CinematicIntro reducedMotion={reducedMotion} onIntroComplete={() => { window.history.pushState({}, "", "/home"); window.dispatchEvent(new PopStateEvent("popstate")); }} /></div>;
+  return <CinematicIntro reducedMotion={reducedMotion} onIntroComplete={() => { window.history.pushState({}, "", "/home"); window.dispatchEvent(new PopStateEvent("popstate")); }} />;
 }

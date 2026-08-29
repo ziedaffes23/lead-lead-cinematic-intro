@@ -8,7 +8,6 @@ const read = (relativePath: string) => readFileSync(resolve(projectRoot, relativ
 describe("mobile responsive contract", () => {
   it("loads the shared mobile refinement after each active route style stack", () => {
     for (const page of [
-      "client/src/pages/Home.tsx",
       "client/src/pages/ConferenceHome.tsx",
       "client/src/pages/ConferenceSection.tsx",
       "client/src/pages/Game.tsx",
@@ -16,7 +15,7 @@ describe("mobile responsive contract", () => {
     ]) {
       expect(read(page)).toContain('import "@/styles/mobile-layout.css";');
     }
-    expect(read("client/src/pages/Home.tsx")).toContain("<ConferenceHeader current=\"home\" />");
+    expect(read("client/src/pages/Home.tsx")).not.toContain("ConferenceHeader");
   });
 
   it("keeps mobile route headers full-bleed while content remains inset", () => {
