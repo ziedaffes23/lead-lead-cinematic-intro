@@ -13,6 +13,9 @@ type Obstacle = {
   cleared?: boolean;
 };
 type Fragment = { x: number; y: number; taken?: boolean };
+type RooftopRunProps = {
+  startControlRef?: { current: () => void };
+};
 
 const WIDTH = 960;
 const HEIGHT = 440;
@@ -20,7 +23,7 @@ const GROUND = HEIGHT - 76;
 const TARGET_FRAME_MS = 1000 / 60;
 const BEST_SCORE_KEY = "lead-lead-rooftop-best";
 
-export function RooftopRun() {
+export function RooftopRun({ startControlRef }: RooftopRunProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<GameState>("idle");
   const resetRef = useRef<() => void>(() => undefined);
@@ -100,6 +103,7 @@ export function RooftopRun() {
       setState("playing");
     };
     startRef.current = beginRun;
+    if (startControlRef) startControlRef.current = beginRun;
     const launch = () => {
       if (stateRef.current !== "playing") return;
       if (player.jumps < 2) {
@@ -554,6 +558,7 @@ export function RooftopRun() {
       canvas.removeEventListener("pointerdown", onPointer);
       resetRef.current = () => undefined;
       startRef.current = () => undefined;
+      if (startControlRef) startControlRef.current = () => undefined;
     };
   }, []);
 

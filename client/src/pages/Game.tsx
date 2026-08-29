@@ -4,6 +4,7 @@ import { RooftopRun } from "@/components/RooftopRun";
 import { SiteMotion } from "@/components/SiteMotion";
 import { ConferenceHeader } from "@/components/ConferenceHeader";
 import { ConferenceFooter } from "@/components/ConferenceFooter";
+import { useRef } from "react";
 import "@/styles/game.css";
 import "@/styles/motion.css";
 import "@/styles/cinematic-polish.css";
@@ -15,7 +16,83 @@ import "@/styles/rooftop-command-deck.css";
 import "@/styles/mobile-layout.css";
 import "@/styles/mobile-final-fixes.css";
 import "@/styles/layout-system.css";
+import "@/styles/trial-start-control.css";
+
+// prettier-ignore
+const RegisterArrow = () => <>REGISTER <b>→</b></>;
 
 export default function Game() {
-  return <main className="game-page chase-route chase-game cinematic-world-root"><CinematicBackground tone="trials" /><div className="route-entry-wipe" aria-hidden="true" /><div className="route-pressure-lines" aria-hidden="true"><i /><i /><i /></div><SiteMotion /><ConferenceHeader current="game" /><section className="trial-command-deck" data-reveal><div className="trial-command-deck__heading"><p className="trial-command-deck__eyebrow"><span>CHAPTER VI</span> / ROOFTOP TRIAL</p><h1>Rooftops<br />of <em>Thyna</em></h1></div><aside className="trial-command-deck__panel" aria-label="Trial briefing"><div className="trial-command-deck__panel-head"><span>RUN PROTOCOL</span><i>LIVE</i></div><div className="trial-command-deck__objective"><small>CURRENT OBJECTIVE</small><strong>KEEP THE ROUTE</strong></div><dl className="trial-command-deck__stats"><div><dt>PRIMARY STRIKE</dt><dd><kbd>F</kbd></dd></div><div><dt>RUN STATE</dt><dd>READY</dd></div></dl></aside></section><div className="game-chase-frame" data-reveal><RooftopRun /></div><section className="game-after" data-reveal><button className="bronze-button" type="button" onClick={() => window.location.assign("/register")}>REGISTER <b>→</b></button></section><ConferenceFooter /></main>;
+  const startControlRef = useRef<() => void>(() => undefined);
+
+  return (
+    <main className="game-page chase-route chase-game cinematic-world-root">
+      <CinematicBackground tone="trials" />
+      <div className="route-entry-wipe" aria-hidden="true" />
+      <div className="route-pressure-lines" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </div>
+      <SiteMotion />
+      <ConferenceHeader current="game" />
+      <section className="trial-command-deck" data-reveal>
+        <div className="trial-command-deck__heading">
+          <p className="trial-command-deck__eyebrow">
+            <span>CHAPTER VI</span> / ROOFTOP TRIAL
+          </p>
+          <h1>
+            Rooftops
+            <br />
+            of <em>Thyna</em>
+          </h1>
+          <button
+            className="trial-top-start"
+            type="button"
+            onClick={() => startControlRef.current()}
+          >
+            <span>START GAME</span>
+            <b>→</b>
+          </button>
+        </div>
+        <aside
+          className="trial-command-deck__panel"
+          aria-label="Trial briefing"
+        >
+          <div className="trial-command-deck__panel-head">
+            <span>RUN PROTOCOL</span>
+            <i>LIVE</i>
+          </div>
+          <div className="trial-command-deck__objective">
+            <small>CURRENT OBJECTIVE</small>
+            <strong>KEEP THE ROUTE</strong>
+          </div>
+          <dl className="trial-command-deck__stats">
+            <div>
+              <dt>PRIMARY STRIKE</dt>
+              <dd>
+                <kbd>F</kbd>
+              </dd>
+            </div>
+            <div>
+              <dt>RUN STATE</dt>
+              <dd>READY</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+      <div className="game-chase-frame" data-reveal>
+        <RooftopRun startControlRef={startControlRef} />
+      </div>
+      <section className="game-after" data-reveal>
+        <button
+          className="bronze-button"
+          type="button"
+          onClick={() => window.location.assign("/register")}
+        >
+          <RegisterArrow />
+        </button>
+      </section>
+      <ConferenceFooter />
+    </main>
+  );
 }
