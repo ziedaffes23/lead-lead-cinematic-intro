@@ -1685,3 +1685,39 @@ body:has(.registration-site),
     transform: none !important;
   }
 }
+
+/* Registration one-scrollbar contract: the browser document is the only vertical scroller. */
+html:has(.registration-site),
+body:has(.registration-site),
+body:has(.registration-site) #root {
+  height: auto !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: auto !important;
+}
+
+.registration-site,
+.registration-site .register-layout,
+.registration-site .dossier-intro,
+.registration-site .dossier-panel,
+.registration-site .dossier-panel form,
+.registration-site .registration-step,
+.registration-site .registration-receipt {
+  position: static !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  overscroll-behavior: auto !important;
+}
+
+.registration-site .dossier-panel {
+  contain: none !important;
+  transform: none !important;
+}
+
+.registration-site .dossier-panel form {
+  display: block !important;
+}
