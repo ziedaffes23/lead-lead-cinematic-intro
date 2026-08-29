@@ -13,6 +13,7 @@ import "@/styles/lighthouse-restore.css";
 import "@/styles/conference-navigation.css";
 import "@/styles/single-screen-home.css";
 import "@/styles/mobile-layout.css";
+import "@/styles/homepage-final-fixes.css";
 
 function pad(value: number) {
   return String(value).padStart(2, "0");

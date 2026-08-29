@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Redirect, Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { BackgroundMusic } from "./components/BackgroundMusic";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import "./styles/theme-ui.css";
 
@@ -43,5 +44,5 @@ function Router() {
 }
 
 export default function App() {
-  return <ErrorBoundary><ThemeProvider defaultTheme="dark" switchable={false}><Router /></ThemeProvider></ErrorBoundary>;
+  return <ErrorBoundary><ThemeProvider defaultTheme="dark" switchable={false}><BackgroundMusic /><Router /></ThemeProvider></ErrorBoundary>;
 }
