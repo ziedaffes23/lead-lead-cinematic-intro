@@ -4,6 +4,7 @@ import { RooftopRun } from "@/components/RooftopRun";
 import { SiteMotion } from "@/components/SiteMotion";
 import { ConferenceHeader } from "@/components/ConferenceHeader";
 import { ConferenceFooter } from "@/components/ConferenceFooter";
+import { CINEMATIC_ASSETS } from "@/game/assets";
 import { useRef } from "react";
 import "@/styles/game.css";
 import "@/styles/motion.css";
@@ -17,6 +18,7 @@ import "@/styles/mobile-layout.css";
 import "@/styles/mobile-final-fixes.css";
 import "@/styles/layout-system.css";
 import "@/styles/trial-start-control.css";
+import "@/styles/route-photo-background.css";
 
 // prettier-ignore
 const RegisterArrow = () => <>REGISTER <b>→</b></>;
@@ -27,6 +29,13 @@ export default function Game() {
   return (
     <main className="game-page chase-route chase-game cinematic-world-root">
       <CinematicBackground tone="trials" />
+      <div
+        className="game-photo-backdrop"
+        style={{
+          backgroundImage: `url(${CINEMATIC_ASSETS.thynaRooftopBackground})`,
+        }}
+        aria-hidden="true"
+      />
       <div className="route-entry-wipe" aria-hidden="true" />
       <div className="route-pressure-lines" aria-hidden="true">
         <i />

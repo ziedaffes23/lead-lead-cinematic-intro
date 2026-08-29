@@ -267,7 +267,7 @@ export default function Register() {
       <div className="route-entry-wipe" aria-hidden="true" />
       <div className="route-pressure-lines" aria-hidden="true"><i /><i /><i /></div>
       <div className="dossier-relic-route" aria-hidden="true"><i /></div>
-      <div className="register-backdrop" style={{ backgroundImage: `url(${CINEMATIC_ASSETS.rooftopReference})` }} aria-hidden="true" />
+      <div className="register-backdrop" style={{ backgroundImage: `url(${CINEMATIC_ASSETS.thynaRooftopBackground})` }} aria-hidden="true" />
       <div className="register-rails" aria-hidden="true"><i /><i /></div>
       <img className="register-courier" src={CINEMATIC_ASSETS.courierGrab} alt="" aria-hidden="true" />
       <div className="register-relic-trace" aria-hidden="true"><i /></div>
