@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 
 const pageSource = await readFile(new URL("../client/src/pages/ConferenceHome.tsx", import.meta.url), "utf8");
 const lighthouseStyles = await readFile(new URL("../client/src/styles/lighthouse-hero.css", import.meta.url), "utf8");
-const restoreStyles = await readFile(new URL("../client/src/styles/lighthouse-restore.css", import.meta.url), "utf8");
 const contrastStyles = await readFile(new URL("../client/src/styles/light-mode-contrast.css", import.meta.url), "utf8");
 
 describe("ConferenceHome lighthouse hero", () => {
@@ -22,13 +21,9 @@ describe("ConferenceHome lighthouse hero", () => {
     expect(lighthouseStyles).toContain("animation:none");
   });
 
-  it("restores the larger abstract beacon and targets the title on desktop and mobile", () => {
-    expect(pageSource).toContain('<div className="world-hero__beacon" aria-hidden="true"><span /><i /><b /></div>');
+  it("keeps the hero free of the distracting lighthouse beacon", () => {
+    expect(pageSource).not.toContain('className="world-hero__beacon"');
     expect(pageSource).not.toContain("world-hero__tower");
-    expect(restoreStyles).toContain("width:16rem;height:34rem");
-    expect(restoreStyles).toContain("transform:rotate(25deg)");
-    expect(restoreStyles).toContain("transform:rotate(49deg)");
-    expect(restoreStyles).toContain("@media(prefers-reduced-motion:reduce)");
   });
 
   it("defines a deliberate readable light-mode palette for public surfaces and actions", () => {

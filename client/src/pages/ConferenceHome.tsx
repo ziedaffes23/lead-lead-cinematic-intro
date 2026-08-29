@@ -51,7 +51,6 @@ export default function ConferenceHome() {
         <div className="world-hero__backdrop" style={{ backgroundImage: `url(${CINEMATIC_ASSETS.rooftopReference})` }} aria-hidden="true" />
         <div className="world-hero__grid" aria-hidden="true" />
         <div className="world-hero__moon" aria-hidden="true" />
-        <div className="world-hero__beacon" aria-hidden="true"><span /><i /><b /></div>
         <div className="world-hero__coordinates" aria-hidden="true">36° 48′ N / 10° 10′ E</div>
 
         <div className="world-hero__copy">
