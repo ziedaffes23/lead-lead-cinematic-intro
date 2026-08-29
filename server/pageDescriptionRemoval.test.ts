@@ -21,7 +21,7 @@ describe("streamlined public page introductions", () => {
   it("keeps functional game and registration content while removing their page descriptions", () => {
     expect(game).not.toContain("trial-command-deck__copy");
     expect(game).not.toContain("Leap, slide, strike");
-    expect(game).toContain("OPEN THE DELEGATE DOSSIER");
+    expect(game).toContain(">REGISTER <b>→</b>");
     expect(register).not.toContain("A simple three-step registration");
     expect(register).toContain("STARTS");
     expect(register).toContain("10 September 2026");
