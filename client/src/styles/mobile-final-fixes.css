@@ -60,3 +60,13 @@
   .conference-nav{row-gap:.35rem!important}
   .conference-nav .game-nav__links>a,.conference-nav .game-nav__links>button{min-height:2rem!important;padding:.45rem .58rem!important;font-size:.4rem!important}
 }
+
+/* Keep every navigation destination visible on mobile; do not hide links behind horizontal scrolling. */
+@media(max-width:700px){
+  .conference-nav .game-nav__links{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:.3rem!important;overflow:visible!important;padding:.15rem 0 0!important}
+  .conference-nav .game-nav__links>a,.conference-nav .game-nav__links>button{width:100%!important;box-sizing:border-box!important;min-width:0!important;justify-content:center!important;text-align:center!important}
+  .conference-nav .game-nav__links .game-nav__register{margin-left:0!important}
+}
+@media(max-width:390px){
+  .conference-nav .game-nav__links{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:.3rem!important}
+}
