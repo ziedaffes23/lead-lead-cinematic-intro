@@ -12,7 +12,7 @@ const input: RegistrationSubmissionInput = {
   phoneCountry: "+216",
   phone: "55111222",
   email: "foulen@example.com",
-  nationality: "Tounsi",
+  nationality: "Tunisian",
   track: "MMB",
   position: "Manager",
   singleRoom: false,

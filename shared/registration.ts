@@ -15,7 +15,7 @@ export const LOCAL_COMMITTEES = [
 
 export type LocalCommittee = (typeof LOCAL_COMMITTEES)[number];
 
-export function localCommitteeFromSearch(search: string, fallback: LocalCommittee = LOCAL_COMMITTEES[0]): LocalCommittee {
+export function localCommitteeFromSearch(search: string, fallback: LocalCommittee | "" = LOCAL_COMMITTEES[0]): LocalCommittee | "" {
   const candidate = new URLSearchParams(search).get("lc")?.trim();
   return candidate && (LOCAL_COMMITTEES as readonly string[]).includes(candidate) ? candidate as LocalCommittee : fallback;
 }

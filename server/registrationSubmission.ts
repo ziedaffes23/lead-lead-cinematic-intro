@@ -12,7 +12,7 @@ export const registrationSubmissionInput = z.object({
   phoneCountry: z.string().trim().min(1),
   phone: z.string().trim().min(1),
   email: z.string().trim().email(),
-  nationality: z.literal("Tounsi"),
+  nationality: z.literal("Tunisian"),
   track: z.enum(["MMB", "EB"]),
   position: z.enum(["Manager", "Team Leader", "LCVP", "LCP"]),
   singleRoom: z.boolean(),

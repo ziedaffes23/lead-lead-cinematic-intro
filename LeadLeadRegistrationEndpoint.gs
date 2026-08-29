@@ -103,7 +103,7 @@ function validatePayload(payload) {
     if (payload[key] === undefined || payload[key] === null || String(payload[key]).trim() === "") throw new Error(`Missing required field: ${key}.`);
   });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(String(payload.email).trim())) throw new Error("Email must be a valid email address.");
-  if (payload.nationality !== "Tounsi") throw new Error("Only Tunisian registrations are currently accepted.");
+  if (payload.nationality !== "Tunisian") throw new Error("Only Tunisian registrations are currently accepted.");
   if (!ALLOWED_TRACKS.includes(cleanText(payload.track))) throw new Error("Select a valid conference track.");
   if (!ALLOWED_POSITIONS.includes(cleanText(payload.position))) throw new Error("Select a valid position.");
 }

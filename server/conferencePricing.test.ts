@@ -18,18 +18,18 @@ describe("conference pricing", () => {
   });
 
   it("calculates Tunisian MMB and EB packages", () => {
-    expect(getContribution("Tounsi", "MMB")).toMatchObject({ price: 160, currency: "TND" });
-    expect(getContribution("Tounsi", "EB")).toMatchObject({ price: 240, currency: "TND" });
+    expect(getContribution("Tunisian", "MMB")).toMatchObject({ price: 160, currency: "TND" });
+    expect(getContribution("Tunisian", "EB")).toMatchObject({ price: 240, currency: "TND" });
   });
 
   it("adds a 50 TND single-room surcharge", () => {
-    expect(getContribution("Tounsi", "MMB", true)).toMatchObject({ price: 210, currency: "TND" });
-    expect(getContribution("Tounsi", "EB", true)).toMatchObject({ price: 290, currency: "TND" });
-    expect(getContribution("Tounsi", "MMB", true)?.note).toContain("+50 TND");
+    expect(getContribution("Tunisian", "MMB", true)).toMatchObject({ price: 210, currency: "TND" });
+    expect(getContribution("Tunisian", "EB", true)).toMatchObject({ price: 290, currency: "TND" });
+    expect(getContribution("Tunisian", "MMB", true)?.note).toContain("+50 TND");
   });
 
   it("does not calculate a contribution for an incomplete or non-Tunisian selection", () => {
     expect(getContribution("", "MMB")).toBeNull();
-    expect(getContribution("Tounsi", "")).toBeNull();
+    expect(getContribution("Tunisian", "")).toBeNull();
   });
 });

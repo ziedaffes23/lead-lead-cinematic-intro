@@ -1,4 +1,4 @@
-export type ConferenceNationality = "" | "Tounsi";
+export type ConferenceNationality = "" | "Tunisian";
 export type ConferenceTrack = "" | "MMB" | "EB";
 
 export const TUNISIAN_MMB_TND = 160;
@@ -19,7 +19,7 @@ export function getContribution(
   track: ConferenceTrack,
   singleRoom = false,
 ): Contribution | null {
-  if (nationality !== "Tounsi" || !track) return null;
+  if (nationality !== "Tunisian" || !track) return null;
 
   const isMmb = track === "MMB";
   const basePrice = isMmb ? TUNISIAN_MMB_TND : TUNISIAN_EB_TND;
