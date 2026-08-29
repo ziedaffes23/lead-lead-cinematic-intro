@@ -607,14 +607,7 @@ export function RooftopRun() {
             <span>LIVES</span>
             <strong>{remainingLives}/3</strong>
             <div aria-hidden="true">
-              {[0, 1, 2].map(index => (
-                <i
-                  className={index < remainingLives ? "is-full" : "is-empty"}
-                  key={index}
-                >
-                  ◇
-                </i>
-              ))}
+              <i className={remainingLives > 0 ? "is-full" : "is-empty"}>◇</i>
             </div>
           </div>
           {state !== "playing" && (
