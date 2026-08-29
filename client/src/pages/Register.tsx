@@ -28,6 +28,7 @@ import "@/styles/registration-homeworld.css";
 import "@/styles/conference-navigation.css";
 import "@/styles/mobile-layout.css";
 import "@/styles/registration-final-fixes.css";
+import "@/styles/mobile-final-fixes.css";
 
 const lcs = LOCAL_COMMITTEES;
 const departments = ["IM — Information Management", "F&L — Finance & Legal", "OGV — Outgoing Global Volunteer", "IGV — Incoming Global Volunteer", "OGT — Outgoing Global Talent", "IGT — Incoming Global Talent", "BD — Business Development", "MKT — Marketing", "Other"];

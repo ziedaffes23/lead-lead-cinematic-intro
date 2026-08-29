@@ -14,6 +14,7 @@ import "@/styles/section-pages.css";
 import "@/styles/conference-navigation.css";
 import "@/styles/hall-since-details.css";
 import "@/styles/mobile-layout.css";
+import "@/styles/mobile-final-fixes.css";
 
 type SectionId = "brief" | "principles" | "prep" | "banners" | "mirage";
 type Faction = typeof conferenceFactions[number];

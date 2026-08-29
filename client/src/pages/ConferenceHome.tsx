@@ -14,6 +14,7 @@ import "@/styles/conference-navigation.css";
 import "@/styles/single-screen-home.css";
 import "@/styles/mobile-layout.css";
 import "@/styles/homepage-final-fixes.css";
+import "@/styles/mobile-final-fixes.css";
 
 function pad(value: number) {
   return String(value).padStart(2, "0");
