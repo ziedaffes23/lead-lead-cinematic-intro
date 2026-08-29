@@ -18,6 +18,7 @@ import "@/styles/mobile-final-fixes.css";
 import "@/styles/layout-system.css";
 import "@/styles/game-home-redesign.css";
 import "@/styles/mobile-overhaul.css";
+import "@/styles/home-animated-refresh.css";
 
 function pad(value: number) {
   return String(value).padStart(2, "0");
