@@ -3,7 +3,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const projectRoot = resolve(import.meta.dirname, "..");
-const read = (relativePath: string) => readFileSync(resolve(projectRoot, relativePath), "utf8");
+const read = (relativePath: string) =>
+  readFileSync(resolve(projectRoot, relativePath), "utf8");
 
 describe("mobile responsive contract", () => {
   it("loads the shared mobile refinement after each active route style stack", () => {
@@ -16,6 +17,17 @@ describe("mobile responsive contract", () => {
       expect(read(page)).toContain('import "@/styles/mobile-layout.css";');
     }
     expect(read("client/src/pages/Home.tsx")).not.toContain("ConferenceHeader");
+    expect(read("client/src/main.tsx")).toContain(
+      'import "./styles/mobile-overhaul.css";'
+    );
+  });
+
+  it("keeps the final mobile layer responsible for full-width route geometry", () => {
+    const css = read("client/src/styles/mobile-overhaul.css");
+    expect(css).toContain(".game-page {");
+    expect(css).toContain("padding-left: 0 !important");
+    expect(css).toContain(".registration-site .form-grid.two");
+    expect(css).toContain(".conference-section-page--mirage .leaderboard-grid");
   });
 
   it("keeps mobile route headers full-bleed while content remains inset", () => {
@@ -39,6 +51,8 @@ describe("mobile responsive contract", () => {
     expect(css).toContain("max-height: 700px");
     expect(css).toContain(".game-home--single-screen > .world-hero");
     expect(css).toContain(".game-home--single-screen .mission-console");
-    expect(read("client/src/styles/single-screen-home.css")).toContain("overflow:hidden");
+    expect(read("client/src/styles/single-screen-home.css")).toContain(
+      "overflow:hidden"
+    );
   });
 });

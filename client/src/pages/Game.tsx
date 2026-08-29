@@ -18,6 +18,7 @@ import "@/styles/mobile-final-fixes.css";
 import "@/styles/layout-system.css";
 import "@/styles/game-lifecycle.css";
 import "@/styles/route-photo-background.css";
+import "@/styles/mobile-overhaul.css";
 
 // prettier-ignore
 const RegisterArrow = () => <>REGISTER <b>→</b></>;

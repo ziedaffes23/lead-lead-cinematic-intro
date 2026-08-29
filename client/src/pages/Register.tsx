@@ -30,6 +30,7 @@ import "@/styles/mobile-layout.css";
 import "@/styles/registration-final-fixes.css";
 import "@/styles/mobile-final-fixes.css";
 import "@/styles/layout-system.css";
+import "@/styles/mobile-overhaul.css";
 
 const lcs = LOCAL_COMMITTEES;
 const departments = ["IM — Information Management", "F&L — Finance & Legalities", "TM — Talent Management", "OGV — Outgoing Global Volunteer", "IGV — Incoming Global Volunteer", "OGT — Outgoing Global Talent", "IGT — Incoming Global Talent", "BD — Business Development", "MKT — Marketing", "Other"];
