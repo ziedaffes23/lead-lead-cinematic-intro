@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { confirmSheetsDelivery } from "@shared/sheetsDelivery";
+import { getSheetsWebAppUrl } from "../shared/sheetsEndpoint";
 
 const publicUrl = z
   .string()
@@ -54,8 +55,7 @@ export type RegistrationSubmissionInput = z.infer<
 export async function submitRegistrationToSheets(
   input: RegistrationSubmissionInput
 ) {
-  const endpoint =
-    process.env.VITE_SHEETS_WEB_APP_URL || process.env.SHEETS_WEB_APP_URL;
+  const endpoint = getSheetsWebAppUrl();
   if (!endpoint) {
     throw new TRPCError({
       code: "PRECONDITION_FAILED",

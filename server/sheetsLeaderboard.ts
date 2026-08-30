@@ -1,4 +1,5 @@
 import { LOCAL_COMMITTEES, type LocalCommittee } from "../shared/registration";
+import { getSheetsLeaderboardUrl } from "../shared/sheetsEndpoint";
 
 export type SheetLeaderboardEntry = { lc: LocalCommittee; registrations: number };
 
@@ -20,7 +21,7 @@ export function parseSheetLeaderboard(payload: unknown): SheetLeaderboardEntry[]
     .slice(0, 3);
 }
 
-export async function getSheetLeaderboard(endpoint = process.env.VITE_SHEETS_WEB_APP_URL): Promise<SheetLeaderboardEntry[]> {
+export async function getSheetLeaderboard(endpoint = getSheetsLeaderboardUrl()): Promise<SheetLeaderboardEntry[]> {
   if (!endpoint) throw new Error("The registration sheet endpoint is not configured.");
   const url = new URL(endpoint);
   url.searchParams.set("view", "leaderboard");
