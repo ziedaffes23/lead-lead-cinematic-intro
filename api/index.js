@@ -823,7 +823,7 @@ async function recordLeaderboardRegistration(lc, email) {
 }
 
 // shared/sheetsEndpoint.ts
-var DEFAULT_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwQ40qc9TDpAlz0g6GQ1-CbXDDkiMA3crhafU7pdIZxK-kOy7_lfZwdaphS8uax1l5IlQ/exec";
+var DEFAULT_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbztUHdla2ycMjqGiXMoTpjTRAQ2QwZuCvLzSsHSw1EaKUjeh0Xte7_1gz_rfoWf2qY8BA/exec";
 function getSheetsWebAppUrl() {
   return process.env.VITE_SHEETS_WEB_APP_URL || process.env.SHEETS_WEB_APP_URL || DEFAULT_SHEETS_WEB_APP_URL;
 }
