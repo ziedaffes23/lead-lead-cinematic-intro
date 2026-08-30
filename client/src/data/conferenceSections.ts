@@ -23,9 +23,10 @@ export const registrationReadiness = [
 import { assetUrl } from "@/lib/assetUrl";
 
 const factionFallback = "/assets/lead-lead-fallback.svg";
+const thynaLogo = "/assets/lc-thyna-logo-white.png";
 
 export const conferenceFactions = [
-  { id: "thyna", name: "LC Thyna", logo: assetUrl("/manus-storage/Thyna_1bf5fbed.png", factionFallback), logoTreatment: "transparent", established: "Since 1997", detail: "LC Thyna", slogan: "للقمة و نقودوها" },
+  { id: "thyna", name: "LC Thyna", logo: thynaLogo, logoTreatment: "transparent", established: "Since 1997", detail: "LC Thyna", slogan: "للقمة و نقودوها" },
   { id: "university", name: "LC University", logo: assetUrl("/manus-storage/University_28b5bd24.png", factionFallback), logoTreatment: "paper", established: "Since 1987", detail: "LC University", slogan: "لوكال يشعل بالنار" },
   { id: "bullaregia", name: "SU Bullaregia", logo: assetUrl("/manus-storage/Bullaregia_4f76f328.png", factionFallback), logoTreatment: "paper", established: "Since 2025", detail: "SU Bullaregia", slogan: "The north will remember" },
   { id: "tacapes", name: "LC Tacapes", logo: assetUrl("/manus-storage/Tacapes_4d0e60ea.png", factionFallback), logoTreatment: "paper", established: "Since 2014", detail: "LC Tacapes", slogan: "تكاباس الحب" },

@@ -6,12 +6,14 @@
 import { assetUrl } from "@/lib/assetUrl";
 
 const fallback = "/assets/lead-lead-fallback.svg";
+const thynaLogo = "/assets/lc-thyna-logo-white.png";
+const leadLeadLogo = "/assets/lead-lead-2k26-logo.png";
 const rooftop = "/assets/thyna-rooftop-background.png";
 const city = "/assets/lead-lead-city-background-v2.png";
 
 export const CINEMATIC_ASSETS = {
-  logo: assetUrl("/manus-storage/lead-lead-official-logo_f7b00492.png", fallback),
-  emblem: assetUrl("/manus-storage/lead-lead-2k26-emblem_777efc54.png", fallback),
+  logo: thynaLogo,
+  emblem: leadLeadLogo,
   rooftopReference: assetUrl("/manus-storage/lead-lead-moonlit-rooftop_f19ec9d4.jpg", city),
   thynaRooftopBackground: rooftop,
   stoneTexture: assetUrl("/manus-storage/lead-lead-stone-material_8e8d229b.jpg", rooftop),
