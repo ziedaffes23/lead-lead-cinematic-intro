@@ -11,7 +11,7 @@ const REGISTRATIONS_SHEET_NAME = "Sheet1";
 const DRIVE_FOLDER_ID = "1W9D3eZ6p2X6Y4qaOO-JzDr1MJtwceCUR";
 
 const REQUIRED_HEADERS = [
-  "Timestamp", "First name", "Last name", "CIN number", "Phone country", "Phone",
+  "Timestamp", "First name", "Last name", "Gender", "CIN number", "Phone country", "Phone",
   "Email", "Local committee", "Nationality", "Other nationality", "Track", "Position",
   "Single room", "Department", "Price", "Currency", "Allergies", "Note",
   "Profile Photo URL", "Profile Photo Name", "CV URL", "CV Name",
@@ -66,6 +66,7 @@ function doPost(event) {
       "Timestamp": new Date(),
       "First name": cleanText(payload.firstName),
       "Last name": cleanText(payload.lastName),
+      "Gender": cleanText(payload.gender),
       "CIN number": cleanText(payload.cin),
       "Phone country": cleanText(payload.phoneCountry),
       "Phone": cleanText(payload.phone),
@@ -106,10 +107,11 @@ function parsePayload(event) {
 }
 
 function validatePayload(payload) {
-  const required = ["firstName", "lastName", "cin", "phoneCountry", "phone", "email", "lc", "nationality", "track", "position", "department", "price", "currency", "allergies", "note", "photoUrl", "cvUrl", "identityUrl", "indemnitySignature", "indemnityAccepted"];
+  const required = ["firstName", "lastName", "gender", "cin", "phoneCountry", "phone", "email", "lc", "nationality", "track", "position", "department", "price", "currency", "allergies", "note", "photoUrl", "cvUrl", "identityUrl", "indemnitySignature", "indemnityAccepted"];
   required.forEach((key) => {
     if (payload[key] === undefined || payload[key] === null || String(payload[key]).trim() === "") throw new Error(`Missing required field: ${key}.`);
   });
+  if (!["Female", "Male", "Non-binary", "Prefer not to say"].includes(cleanText(payload.gender))) throw new Error("Select a valid gender.");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(String(payload.email).trim())) throw new Error("Email must be a valid email address.");
   if (payload.nationality !== "Tunisian") throw new Error("Only Tunisian registrations are currently accepted.");
   if (payload.indemnityAccepted !== true && String(payload.indemnityAccepted).toLowerCase() !== "true") throw new Error("Indemnity consent is required.");

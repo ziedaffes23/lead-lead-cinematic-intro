@@ -822,6 +822,15 @@ async function recordLeaderboardRegistration(lc, email) {
   return true;
 }
 
+// shared/sheetsEndpoint.ts
+var DEFAULT_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwQ40qc9TDpAlz0g6GQ1-CbXDDkiMA3crhafU7pdIZxK-kOy7_lfZwdaphS8uax1l5IlQ/exec";
+function getSheetsWebAppUrl() {
+  return process.env.VITE_SHEETS_WEB_APP_URL || process.env.SHEETS_WEB_APP_URL || DEFAULT_SHEETS_WEB_APP_URL;
+}
+function getSheetsLeaderboardUrl() {
+  return getSheetsWebAppUrl();
+}
+
 // server/sheetsLeaderboard.ts
 function parseSheetLeaderboard(payload) {
   if (!payload || typeof payload !== "object" || payload.ok !== true) {
@@ -836,7 +845,7 @@ function parseSheetLeaderboard(payload) {
     return Number.isInteger(registrations) && registrations > 0 ? [{ lc: candidate.lc, registrations }] : [];
   }).sort((left, right) => right.registrations - left.registrations || left.lc.localeCompare(right.lc)).slice(0, 3);
 }
-async function getSheetLeaderboard(endpoint = process.env.VITE_SHEETS_WEB_APP_URL) {
+async function getSheetLeaderboard(endpoint = getSheetsLeaderboardUrl()) {
   if (!endpoint) throw new Error("The registration sheet endpoint is not configured.");
   const url = new URL(endpoint);
   url.searchParams.set("view", "leaderboard");
@@ -878,6 +887,7 @@ var documentReference = z3.union([
 var registrationSubmissionInput = z3.object({
   firstName: z3.string().trim().min(1),
   lastName: z3.string().trim().min(1),
+  gender: z3.enum(["Female", "Male", "Non-binary", "Prefer not to say"]),
   cin: z3.string().trim().regex(/^\d+$/, "CIN number must contain digits only."),
   lc: z3.string().trim().min(1),
   phoneCountry: z3.string().trim().min(1),
@@ -902,7 +912,7 @@ var registrationSubmissionInput = z3.object({
   indemnityAccepted: z3.boolean().refine((value) => value, "Indemnity consent is required.")
 });
 async function submitRegistrationToSheets(input) {
-  const endpoint = process.env.VITE_SHEETS_WEB_APP_URL || process.env.SHEETS_WEB_APP_URL;
+  const endpoint = getSheetsWebAppUrl();
   if (!endpoint) {
     throw new TRPCError4({
       code: "PRECONDITION_FAILED",

@@ -19,6 +19,7 @@ const documentReference = z.union([
 export const registrationSubmissionInput = z.object({
   firstName: z.string().trim().min(1),
   lastName: z.string().trim().min(1),
+  gender: z.enum(["Female", "Male", "Non-binary", "Prefer not to say"]),
   cin: z.string().trim().regex(/^\d+$/, "CIN number must contain digits only."),
   lc: z.string().trim().min(1),
   phoneCountry: z.string().trim().min(1),

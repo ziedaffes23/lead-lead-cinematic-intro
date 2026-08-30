@@ -11,6 +11,7 @@ const originalFetch = globalThis.fetch;
 const input: RegistrationSubmissionInput = {
   firstName: "Foulen",
   lastName: "Fouleni",
+  gender: "Prefer not to say",
   cin: "12345678",
   lc: "LC Thyna",
   phoneCountry: "+216",
