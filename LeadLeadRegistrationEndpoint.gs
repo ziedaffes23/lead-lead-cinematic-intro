@@ -111,7 +111,7 @@ function validatePayload(payload) {
   required.forEach((key) => {
     if (payload[key] === undefined || payload[key] === null || String(payload[key]).trim() === "") throw new Error(`Missing required field: ${key}.`);
   });
-  if (!["Female", "Male", "Non-binary", "Prefer not to say"].includes(cleanText(payload.gender))) throw new Error("Select a valid gender.");
+  if (!["Female", "Male"].includes(cleanText(payload.gender))) throw new Error("Select a valid gender.");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(String(payload.email).trim())) throw new Error("Email must be a valid email address.");
   if (payload.nationality !== "Tunisian") throw new Error("Only Tunisian registrations are currently accepted.");
   if (payload.indemnityAccepted !== true && String(payload.indemnityAccepted).toLowerCase() !== "true") throw new Error("Indemnity consent is required.");
