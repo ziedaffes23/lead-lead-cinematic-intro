@@ -114,6 +114,7 @@ export default function Register() {
   }, [stage]);
   const uploadDocuments = trpc.registration.uploadDocuments.useMutation();
   const submitRegistration = trpc.registration.submit.useMutation();
+  const useDirectSheetsUpload = import.meta.env.VITE_DIRECT_SHEETS_UPLOAD === "true";
   const recordLeaderboard = trpc.registration.record.useMutation();
   const fee = useMemo(() => contribution(form), [form.nationality, form.track, form.singleRoom]);
   const stageNumber = stage === "receipt" ? 4 : stage;
@@ -242,16 +243,26 @@ export default function Register() {
           cv: attachments.cv && cvData ? { name: attachments.cv.name, mimeType: attachments.cv.file.type, dataUrl: cvData } : undefined,
           identity: attachments.identity && identityData ? { name: attachments.identity.name, mimeType: attachments.identity.file.type, dataUrl: identityData } : undefined,
         };
-        try {
-          nextDocuments = await uploadDocuments.mutateAsync(attachmentPayload);
-        } catch {
-          // Railway deployments may not have Manus Forge storage. Apps Script can
-          // decode these data URLs and store the files in Drive directly.
+        if (useDirectSheetsUpload) {
+          // Split-host deployments send the document data URLs directly to the
+          // Apps Script endpoint, avoiding a second large request to the backend.
           nextDocuments = {
             photo: attachmentPayload.photo ? { name: attachmentPayload.photo.name, url: attachmentPayload.photo.dataUrl } : undefined,
             cv: attachmentPayload.cv ? { name: attachmentPayload.cv.name, url: attachmentPayload.cv.dataUrl } : undefined,
             identity: attachmentPayload.identity ? { name: attachmentPayload.identity.name, url: attachmentPayload.identity.dataUrl } : undefined,
           };
+        } else {
+          try {
+            nextDocuments = await uploadDocuments.mutateAsync(attachmentPayload);
+          } catch {
+            // Deployments without Manus Forge storage can let Apps Script decode
+            // these data URLs and store the files in Drive directly.
+            nextDocuments = {
+            photo: attachmentPayload.photo ? { name: attachmentPayload.photo.name, url: attachmentPayload.photo.dataUrl } : undefined,
+            cv: attachmentPayload.cv ? { name: attachmentPayload.cv.name, url: attachmentPayload.cv.dataUrl } : undefined,
+              identity: attachmentPayload.identity ? { name: attachmentPayload.identity.name, url: attachmentPayload.identity.dataUrl } : undefined,
+            };
+          }
         }
         setDocuments(nextDocuments);
       } catch {
