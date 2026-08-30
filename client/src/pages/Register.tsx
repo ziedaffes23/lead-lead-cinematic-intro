@@ -10,6 +10,7 @@ import { CINEMATIC_ASSETS } from "@/game/assets";
 import { trpc } from "@/lib/trpc";
 import { LOCAL_COMMITTEES, localCommitteeFromSearch } from "@shared/registration";
 import { getContribution } from "@/data/conferencePricing";
+import { upload as uploadToBlob } from "@vercel/blob/client";
 import "@/styles/conference.css";
 import "@/styles/motion.css";
 import "@/styles/rooftop-chase-pages.css";
@@ -115,6 +116,8 @@ export default function Register() {
   const uploadDocuments = trpc.registration.uploadDocuments.useMutation();
   const submitRegistration = trpc.registration.submit.useMutation();
   const useDirectSheetsUpload = import.meta.env.VITE_DIRECT_SHEETS_UPLOAD === "true";
+  const useBlobUpload = import.meta.env.VITE_BLOB_UPLOAD === "true";
+  const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
   const recordLeaderboard = trpc.registration.record.useMutation();
   const fee = useMemo(() => contribution(form), [form.nationality, form.track, form.singleRoom]);
   const stageNumber = stage === "receipt" ? 4 : stage;
@@ -233,35 +236,54 @@ export default function Register() {
     let nextDocuments = documents;
     if (!nextDocuments && (attachments.photo || attachments.cv || attachments.identity)) {
       try {
-        const [photoData, cvData, identityData] = await Promise.all([
-          attachments.photo ? readFileAsDataUrl(attachments.photo.file) : Promise.resolve(undefined),
-          attachments.cv ? readFileAsDataUrl(attachments.cv.file) : Promise.resolve(undefined),
-          attachments.identity ? readFileAsDataUrl(attachments.identity.file) : Promise.resolve(undefined),
-        ]);
-        const attachmentPayload = {
-          photo: attachments.photo && photoData ? { name: attachments.photo.name, mimeType: attachments.photo.file.type, dataUrl: photoData } : undefined,
-          cv: attachments.cv && cvData ? { name: attachments.cv.name, mimeType: attachments.cv.file.type, dataUrl: cvData } : undefined,
-          identity: attachments.identity && identityData ? { name: attachments.identity.name, mimeType: attachments.identity.file.type, dataUrl: identityData } : undefined,
-        };
-        if (useDirectSheetsUpload) {
-          // Split-host deployments send the document data URLs directly to the
-          // Apps Script endpoint, avoiding a second large request to the backend.
-          nextDocuments = {
-            photo: attachmentPayload.photo ? { name: attachmentPayload.photo.name, url: attachmentPayload.photo.dataUrl } : undefined,
-            cv: attachmentPayload.cv ? { name: attachmentPayload.cv.name, url: attachmentPayload.cv.dataUrl } : undefined,
-            identity: attachmentPayload.identity ? { name: attachmentPayload.identity.name, url: attachmentPayload.identity.dataUrl } : undefined,
+        if (useBlobUpload) {
+          const uploadOne = async (key: AttachmentKey, attachment: AttachmentState) => {
+            if (!attachment) return undefined;
+            const blob = await uploadToBlob(
+              `registrations/${key}/${Date.now()}-${attachment.name}`,
+              attachment.file,
+              {
+                access: "public",
+                handleUploadUrl: `${apiBaseUrl}/api/upload`,
+                clientPayload: JSON.stringify({ contentType: attachment.file.type }),
+              },
+            );
+            return { name: attachment.name, url: blob.url };
           };
+
+          const [photo, cv, identity] = await Promise.all([
+            uploadOne("photo", attachments.photo),
+            uploadOne("cv", attachments.cv),
+            uploadOne("identity", attachments.identity),
+          ]);
+          nextDocuments = { photo, cv, identity };
         } else {
-          try {
-            nextDocuments = await uploadDocuments.mutateAsync(attachmentPayload);
-          } catch {
-            // Deployments without Manus Forge storage can let Apps Script decode
-            // these data URLs and store the files in Drive directly.
+          const [photoData, cvData, identityData] = await Promise.all([
+            attachments.photo ? readFileAsDataUrl(attachments.photo.file) : Promise.resolve(undefined),
+            attachments.cv ? readFileAsDataUrl(attachments.cv.file) : Promise.resolve(undefined),
+            attachments.identity ? readFileAsDataUrl(attachments.identity.file) : Promise.resolve(undefined),
+          ]);
+          const attachmentPayload = {
+            photo: attachments.photo && photoData ? { name: attachments.photo.name, mimeType: attachments.photo.file.type, dataUrl: photoData } : undefined,
+            cv: attachments.cv && cvData ? { name: attachments.cv.name, mimeType: attachments.cv.file.type, dataUrl: cvData } : undefined,
+            identity: attachments.identity && identityData ? { name: attachments.identity.name, mimeType: attachments.identity.file.type, dataUrl: identityData } : undefined,
+          };
+          if (useDirectSheetsUpload) {
             nextDocuments = {
-            photo: attachmentPayload.photo ? { name: attachmentPayload.photo.name, url: attachmentPayload.photo.dataUrl } : undefined,
-            cv: attachmentPayload.cv ? { name: attachmentPayload.cv.name, url: attachmentPayload.cv.dataUrl } : undefined,
+              photo: attachmentPayload.photo ? { name: attachmentPayload.photo.name, url: attachmentPayload.photo.dataUrl } : undefined,
+              cv: attachmentPayload.cv ? { name: attachmentPayload.cv.name, url: attachmentPayload.cv.dataUrl } : undefined,
               identity: attachmentPayload.identity ? { name: attachmentPayload.identity.name, url: attachmentPayload.identity.dataUrl } : undefined,
             };
+          } else {
+            try {
+              nextDocuments = await uploadDocuments.mutateAsync(attachmentPayload);
+            } catch {
+              nextDocuments = {
+                photo: attachmentPayload.photo ? { name: attachmentPayload.photo.name, url: attachmentPayload.photo.dataUrl } : undefined,
+                cv: attachmentPayload.cv ? { name: attachmentPayload.cv.name, url: attachmentPayload.cv.dataUrl } : undefined,
+                identity: attachmentPayload.identity ? { name: attachmentPayload.identity.name, url: attachmentPayload.identity.dataUrl } : undefined,
+              };
+            }
           }
         }
         setDocuments(nextDocuments);
