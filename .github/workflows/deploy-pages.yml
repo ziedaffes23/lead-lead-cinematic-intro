@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_ACTIONS: true
           VITE_APP_TITLE: Lead&Lead2K26
-          VITE_SHEETS_WEB_APP_URL: ${{ secrets.VITE_SHEETS_WEB_APP_URL }}
+          VITE_SHEETS_WEB_APP_URL: https://script.google.com/macros/s/AKfycbzGnTaQRhgeMMZHlz8hn6QsWf-mcf7BNu5ghj049dv7AM8iisvWdBBl8Zpi0MeCzvmT7w/exec
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
           VITE_DIRECT_SHEETS_UPLOAD: true
 
