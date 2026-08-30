@@ -1,10 +1,19 @@
-# Cloud Run + Cloudflare Pages Deployment
+# GitHub Pages + Google Cloud Run Deployment
 
-This deployment keeps the Node/Express API on Google Cloud Run and serves the large cinematic assets from Cloudflare Pages. Registrations continue to go to the existing Google Apps Script `/exec` endpoint, and uploaded documents are sent directly to Apps Script as data URLs.
+This deployment avoids Railway, Render, and Cloudflare dashboard verification. GitHub Pages serves the cinematic frontend and its large assets from GitHub’s CDN. Google Cloud Run runs the Node/Express API. Registrations and documents continue to use the existing Google Apps Script `/exec` endpoint.
+
+## Architecture
+
+- **Frontend:** GitHub Pages at `https://ziedaffes23.github.io/lead-lead-cinematic-intro/`
+- **Backend:** Google Cloud Run service URL
+- **Registration data:** Existing Google Apps Script web app and Google Sheet
+- **Documents:** Existing Google Drive workflow
+
+The frontend does not send large cinematic audio/image files through Cloud Run. It also uses `VITE_DIRECT_SHEETS_UPLOAD=true`, so registration attachments are sent to the existing Apps Script flow instead of being uploaded twice through the API.
 
 ## 1. Deploy the API to Cloud Run
 
-Create a Cloud Run service from this repository and build from the root `Dockerfile`.
+Use Google Cloud Run’s **Deploy from source** flow with this repository and the root `Dockerfile`, or deploy the container from Cloud Build.
 
 Set these runtime variables:
 
@@ -13,47 +22,43 @@ Set these runtime variables:
 | `NODE_ENV` | `production` |
 | `VITE_APP_TITLE` | `Lead&Lead2K26` |
 | `VITE_SHEETS_WEB_APP_URL` | The Google Apps Script web-app URL ending in `/exec` |
-| `FRONTEND_ORIGIN` | The final Cloudflare Pages URL, for example `https://lead-lead.pages.dev` |
+| `FRONTEND_ORIGIN` | `https://ziedaffes23.github.io` |
 | `PUBLIC_APP_URL` | The Cloud Run service URL |
 
-Do not set `BUILT_IN_FORGE_API_URL` or `BUILT_IN_FORGE_API_KEY` unless Manus Forge storage is intentionally being used. Cloud Run supplies `PORT` automatically; the application listens on `0.0.0.0`.
+Do not set `BUILT_IN_FORGE_API_URL` or `BUILT_IN_FORGE_API_KEY` unless Manus Forge storage is intentionally being used. Cloud Run supplies `PORT` automatically, and the server listens on `0.0.0.0`.
 
-Allow unauthenticated access to the Cloud Run service because the public registration page must call the API.
+Allow unauthenticated access to the Cloud Run service because the public registration page must call it. Set minimum instances to zero to avoid idle charges.
 
-## 2. Deploy the frontend to Cloudflare Pages
+## 2. Configure GitHub Pages
 
-Create a Pages project from the same GitHub repository with these settings:
+The repository contains `.github/workflows/deploy-pages.yml`. In the GitHub repository, open **Settings → Pages** and select **GitHub Actions** as the source.
 
-| Setting | Value |
+Add this repository secret:
+
+| Secret | Value |
 |---|---|
-| Framework preset | Vite, or None if Vite is not listed |
-| Build command | `corepack enable && pnpm install --frozen-lockfile && pnpm build` |
-| Output directory | `dist/public` |
-| Root directory | `/` |
-| Node version | `22` |
+| `VITE_SHEETS_WEB_APP_URL` | The existing Google Apps Script `/exec` URL |
 
-Set these build variables in Cloudflare Pages:
+Add this repository variable:
 
 | Variable | Value |
 |---|---|
-| `VITE_APP_TITLE` | `Lead&Lead2K26` |
 | `VITE_API_BASE_URL` | The Cloud Run service URL, without a trailing slash |
-| `VITE_DIRECT_SHEETS_UPLOAD` | `true` |
 
-After the first Pages deployment, copy its `pages.dev` URL into Cloud Run’s `FRONTEND_ORIGIN` variable and redeploy Cloud Run. This enables secure cross-origin API requests.
+Pushes to `main` automatically build and deploy the frontend. The workflow builds to `dist/public` and uses the `/lead-lead-cinematic-intro/` base path required by GitHub Pages.
 
 ## 3. Registration verification
 
-Open the Cloudflare Pages URL and verify `/`, `/home`, `/register`, and `/hall-of-banners`. Submit one test registration with small attachments. A successful result must show a receipt, append one row to the configured spreadsheet, and place the three documents in the configured Google Drive folder.
+Open `https://ziedaffes23.github.io/lead-lead-cinematic-intro/` and verify the home page, `/register`, `/mission`, `/principles`, `/hall-of-banners`, `/mirage`, and `/game`.
+
+Submit one test registration with small attachments. A successful submission must display a receipt, append one row to Google Sheets, and place the uploaded documents in Google Drive.
 
 Keep identity documents in a restricted Drive folder. Do not use `Anyone with the link — Viewer` for CIN or passport files.
 
 ## 4. Updating the site
 
-Push changes to the `main` branch. Cloudflare Pages rebuilds the frontend and Cloud Run should be redeployed when backend changes are made. If the Cloud Run URL changes, update `VITE_API_BASE_URL` in Cloudflare Pages and `FRONTEND_ORIGIN` in Cloud Run.
+Push frontend changes to `main` and GitHub Pages will rebuild automatically. Redeploy Cloud Run when backend files change. If the Cloud Run URL changes, update the `VITE_API_BASE_URL` repository variable and redeploy Pages.
 
-The split is intentional: Cloudflare serves the large audio and image assets from its CDN, while Cloud Run handles only API and registration requests. This avoids using the API host’s bandwidth for every cinematic asset download.
+## 5. Billing and limits
 
-## 5. Billing note
-
-Cloud Run is pay-per-use and has a monthly free tier, but Google Cloud requires a billing account and charges any usage beyond the free tier. Set a budget alert and keep minimum instances at zero. Cloudflare Pages is used for the static frontend and its documented Free plan supports static asset hosting.
+Cloud Run is pay-per-use and includes a monthly free tier, but Google Cloud requires a billing account and may charge usage beyond the free tier. Create a Google Cloud budget alert and keep minimum instances at zero. GitHub Pages is used only for static frontend delivery, which prevents large audio and image downloads from consuming Cloud Run bandwidth.

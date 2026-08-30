@@ -153,6 +153,7 @@ function vitePluginManusDebugCollector(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
+  base: process.env.GITHUB_ACTIONS ? "/lead-lead-cinematic-intro/" : "/",
   plugins,
   resolve: {
     alias: {
