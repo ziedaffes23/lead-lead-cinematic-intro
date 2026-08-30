@@ -1,5 +1,6 @@
 import { LOCAL_COMMITTEES, type LocalCommittee } from "../shared/registration";
 import { getSheetsLeaderboardUrl } from "../shared/sheetsEndpoint";
+import { parseSheetsDeliveryBody } from "../shared/sheetsDelivery";
 
 export type SheetLeaderboardEntry = { lc: LocalCommittee; registrations: number };
 
@@ -27,5 +28,5 @@ export async function getSheetLeaderboard(endpoint = getSheetsLeaderboardUrl()):
   url.searchParams.set("view", "leaderboard");
   const response = await fetch(url, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(15_000) });
   if (!response.ok) throw new Error("The registration sheet could not be reached.");
-  return parseSheetLeaderboard(await response.json());
+  return parseSheetLeaderboard(parseSheetsDeliveryBody(await response.text()));
 }
