@@ -54,7 +54,13 @@ function doPost(event) {
     if (!sheet) throw new Error(`Worksheet "${REGISTRATIONS_SHEET_NAME}" was not found.`);
 
     const headers = ensureHeaders(sheet);
-    const driveDocuments = saveAttachmentsToDrive(payload);
+    // Files are uploaded directly from the browser to Vercel Blob before this request.
+    // Keep their HTTPS URLs in the sheet so registration does not depend on DriveApp permissions.
+    const driveDocuments = {
+      photo: { url: cleanUrl(payload.photoUrl), name: cleanText(payload.photoName) },
+      cv: { url: cleanUrl(payload.cvUrl), name: cleanText(payload.cvName) },
+      identity: { url: cleanUrl(payload.identityUrl), name: cleanText(payload.identityName) },
+    };
     const email = cleanText(payload.email || payload.aiesecEmail).toLowerCase();
     const rowByHeader = {
       "Timestamp": new Date(),
@@ -127,7 +133,7 @@ function ensureHeaders(sheet) {
   return headers;
 }
 
-function saveAttachmentsToDrive(payload) {
+function saveAttachmentsToDriveLegacy(payload) {
   const folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
   const documents = {};
   const baseName = `${cleanText(payload.firstName)}-${cleanText(payload.lastName)}-${cleanText(payload.cin)}`.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || `registration-${Date.now()}`;
