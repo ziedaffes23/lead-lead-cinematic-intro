@@ -3,7 +3,7 @@ import { z } from "zod";
 import { storagePut } from "./storage";
 
 const MAX_PHOTO_BYTES = 3 * 1024 * 1024;
-const MAX_CV_BYTES = 5 * 1024 * 1024;
+const MAX_CV_BYTES = 15 * 1024 * 1024;
 const MAX_IDENTITY_BYTES = 5 * 1024 * 1024;
 
 export const attachmentInput = z.object({

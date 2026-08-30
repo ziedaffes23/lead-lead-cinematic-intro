@@ -59,6 +59,15 @@ describe("registration sheet submission bridge", () => {
     expect(registrationSubmissionInput.safeParse(input).success).toBe(true);
   });
 
+  it("accepts direct base64 document references for Railway deployments", () => {
+    expect(registrationSubmissionInput.safeParse({
+      ...input,
+      photoUrl: "data:image/png;base64,aGVsbG8=",
+      cvUrl: "data:application/pdf;base64,aGVsbG8=",
+      identityUrl: "data:application/pdf;base64,aGVsbG8=",
+    }).success).toBe(true);
+  });
+
   it("posts the validated payload server-side and returns the confirmation", async () => {
     process.env.VITE_SHEETS_WEB_APP_URL =
       "https://script.google.com/macros/s/test/exec";

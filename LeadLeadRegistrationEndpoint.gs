@@ -138,13 +138,20 @@ function saveAttachmentsToDrive(payload) {
   ];
 
   candidates.forEach((candidate) => {
-    const url = cleanUrl(candidate.url);
-    const response = UrlFetchApp.fetch(url, { followRedirects: true, muteHttpExceptions: true });
-    if (response.getResponseCode() < 200 || response.getResponseCode() >= 300) {
-      throw new Error(`Unable to download ${candidate.key} for Drive storage.`);
-    }
     const originalName = cleanText(candidate.name).replace(/[^a-zA-Z0-9._-]+/g, "-") || candidate.key;
-    const file = folder.createFile(response.getBlob().setName(`${baseName}-${candidate.key}-${originalName}`));
+    let blob;
+    const dataMatch = /^data:([^;,]+);base64,([A-Za-z0-9+/]+={0,2})$/.exec(cleanText(candidate.url));
+    if (dataMatch) {
+      blob = Utilities.newBlob(Utilities.base64Decode(dataMatch[2]), dataMatch[1], `${baseName}-${candidate.key}-${originalName}`);
+    } else {
+      const url = cleanUrl(candidate.url);
+      const response = UrlFetchApp.fetch(url, { followRedirects: true, muteHttpExceptions: true });
+      if (response.getResponseCode() < 200 || response.getResponseCode() >= 300) {
+        throw new Error(`Unable to download ${candidate.key} for Drive storage.`);
+      }
+      blob = response.getBlob().setName(`${baseName}-${candidate.key}-${originalName}`);
+    }
+    const file = folder.createFile(blob);
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     documents[candidate.key] = { name: file.getName(), url: file.getUrl() };
   });

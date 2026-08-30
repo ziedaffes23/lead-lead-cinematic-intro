@@ -237,11 +237,22 @@ export default function Register() {
           attachments.cv ? readFileAsDataUrl(attachments.cv.file) : Promise.resolve(undefined),
           attachments.identity ? readFileAsDataUrl(attachments.identity.file) : Promise.resolve(undefined),
         ]);
-        nextDocuments = await uploadDocuments.mutateAsync({
+        const attachmentPayload = {
           photo: attachments.photo && photoData ? { name: attachments.photo.name, mimeType: attachments.photo.file.type, dataUrl: photoData } : undefined,
           cv: attachments.cv && cvData ? { name: attachments.cv.name, mimeType: attachments.cv.file.type, dataUrl: cvData } : undefined,
           identity: attachments.identity && identityData ? { name: attachments.identity.name, mimeType: attachments.identity.file.type, dataUrl: identityData } : undefined,
-        });
+        };
+        try {
+          nextDocuments = await uploadDocuments.mutateAsync(attachmentPayload);
+        } catch {
+          // Railway deployments may not have Manus Forge storage. Apps Script can
+          // decode these data URLs and store the files in Drive directly.
+          nextDocuments = {
+            photo: attachmentPayload.photo ? { name: attachmentPayload.photo.name, url: attachmentPayload.photo.dataUrl } : undefined,
+            cv: attachmentPayload.cv ? { name: attachmentPayload.cv.name, url: attachmentPayload.cv.dataUrl } : undefined,
+            identity: attachmentPayload.identity ? { name: attachmentPayload.identity.name, url: attachmentPayload.identity.dataUrl } : undefined,
+          };
+        }
         setDocuments(nextDocuments);
       } catch {
         setStatus("upload");
@@ -277,7 +288,7 @@ export default function Register() {
       <div className="register-rails" aria-hidden="true"><i /><i /></div>
       <img className="register-courier" src={CINEMATIC_ASSETS.courierGrab} alt="" aria-hidden="true" />
       <div className="register-relic-trace" aria-hidden="true"><i /></div>
-      {isEmbedded ? <header className="register-header"><button type="button" className="back-link" onClick={() => window.parent.postMessage({ type: "lead-lead-registration-close" }, window.location.origin)}>← CLOSE REGISTRATION</button><div className="register-event-brand"><img src="/manus-storage/lead-lead-2k26-emblem_777efc54.png" alt="Lead & Lead 2K26 conference logo" /><span>LEAD &amp; LEAD <small>2K26 CONFERENCE</small></span></div></header> : <ConferenceHeader current="register" />}
+      {isEmbedded ? <header className="register-header"><button type="button" className="back-link" onClick={() => window.parent.postMessage({ type: "lead-lead-registration-close" }, window.location.origin)}>← CLOSE REGISTRATION</button><div className="register-event-brand"><img src={CINEMATIC_ASSETS.emblem} alt="Lead & Lead 2K26 conference logo" /><span>LEAD &amp; LEAD <small>2K26 CONFERENCE</small></span></div></header> : <ConferenceHeader current="register" />}
       <div className="register-layout">
         <aside className="dossier-intro"><p className="eyebrow">CHAPTER VI / DELEGATE DOSSIER</p><h1>{stage === "receipt" ? "The record is sealed." : "Answer the call."}</h1><dl><div><dt>STARTS</dt><dd>10 September 2026</dd></div><div><dt>DURATION</dt><dd>{form.track ? `${form.track} · ${form.track === "MMB" ? "3" : "4"} days` : "MMB · 3 days / EB · 4 days"}</dd></div><div><dt>HOST</dt><dd>LC Thyna</dd></div><div><dt>VENUE</dt><dd>Amir Palace</dd></div></dl></aside>
         <section className="dossier-panel" aria-labelledby="registration-title">

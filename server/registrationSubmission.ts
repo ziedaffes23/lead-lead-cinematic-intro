@@ -10,6 +10,11 @@ const publicUrl = z
     "Document URLs must use HTTPS."
   );
 
+const documentReference = z.union([
+  publicUrl,
+  z.string().regex(/^data:[^;,]+;base64,[A-Za-z0-9+/]+={0,2}$/, "Invalid document data."),
+]);
+
 export const registrationSubmissionInput = z.object({
   firstName: z.string().trim().min(1),
   lastName: z.string().trim().min(1),
@@ -30,11 +35,11 @@ export const registrationSubmissionInput = z.object({
   note: z.string().trim().min(1),
   price: z.number().int().nonnegative(),
   currency: z.literal("TND"),
-  photoUrl: publicUrl,
+  photoUrl: documentReference,
   photoName: z.string().trim().min(1),
-  cvUrl: publicUrl,
+  cvUrl: documentReference,
   cvName: z.string().trim().min(1),
-  identityUrl: publicUrl,
+  identityUrl: documentReference,
   identityName: z.string().trim().min(1),
   indemnitySignature: z.string().trim().min(1),
   indemnityAccepted: z
