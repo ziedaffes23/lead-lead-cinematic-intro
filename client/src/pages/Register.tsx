@@ -117,7 +117,8 @@ export default function Register() {
   const uploadDocuments = trpc.registration.uploadDocuments.useMutation();
   const submitRegistration = trpc.registration.submit.useMutation();
   const useDirectSheetsUpload = import.meta.env.VITE_DIRECT_SHEETS_UPLOAD === "true";
-  const useBlobUpload = import.meta.env.VITE_BLOB_UPLOAD === "true";
+  // Direct Blob uploads are the reliable production path; only disable explicitly for local fallback testing.
+  const useBlobUpload = import.meta.env.VITE_BLOB_UPLOAD !== "false";
   const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
   const recordLeaderboard = trpc.registration.record.useMutation();
   const fee = useMemo(() => contribution(form), [form.nationality, form.track, form.singleRoom]);
