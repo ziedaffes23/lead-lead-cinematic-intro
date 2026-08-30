@@ -200,4 +200,8 @@ function cleanUrl(value) {
   return candidate;
 }
 function numberOrBlank(value) { const number = Number(value); return Number.isFinite(number) ? number : ""; }
-function jsonResponse(data) { return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON); }
+function jsonResponse(data) {
+  // HtmlService avoids ContentService's one-time googleusercontent redirect,
+  // which can make server-to-server POST confirmations unreadable.
+  return HtmlService.createHtmlOutput(JSON.stringify(data));
+}
