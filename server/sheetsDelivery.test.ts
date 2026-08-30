@@ -11,6 +11,11 @@ describe("Sheets delivery confirmation", () => {
       .toThrow("Missing required field: department.");
   });
 
+  it("accepts the HTML-wrapped JSON returned by Google Apps Script", () => {
+    const body = '<script>var x={"userHtml\\x22:\\x22\\x7b\\\\\\x22ok\\\\\\x22:true,\\\\\\x22row\\\\x22:50\\x7d\\x22,\\x22ncc"};</script>';
+    expect(confirmSheetsDelivery(true, body)).toEqual({ ok: true, row: 50, documents: undefined });
+  });
+
   it("rejects unreadable response bodies instead of allowing a false receipt", () => {
     expect(() => confirmSheetsDelivery(true, "not-json")).toThrow("unreadable response");
   });

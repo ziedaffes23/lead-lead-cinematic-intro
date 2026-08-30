@@ -863,10 +863,19 @@ import { TRPCError as TRPCError4 } from "@trpc/server";
 import { z as z3 } from "zod";
 
 // shared/sheetsDelivery.ts
+function decodeAppsScriptEnvelope(body) {
+  const direct = body.trim();
+  if (direct.startsWith("{")) return direct;
+  const match = body.match(/userHtml\\x22:\\x22([\s\S]*?)\\x22,\\x22ncc/);
+  if (!match) return direct;
+  let decoded = match[1].replace(/\\x([0-9a-fA-F]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+  while (decoded.includes("\\\\")) decoded = decoded.replaceAll("\\\\", "\\");
+  return decoded.replaceAll('\\"', '"');
+}
 function confirmSheetsDelivery(httpOk, body) {
   let parsed;
   try {
-    parsed = JSON.parse(body);
+    parsed = JSON.parse(decodeAppsScriptEnvelope(body));
   } catch {
     throw new Error("The registration service returned an unreadable response. Please try again shortly.");
   }
