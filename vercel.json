@@ -23,6 +23,10 @@
     {
       "source": "/api/upload",
       "destination": "/api/upload.ts"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
