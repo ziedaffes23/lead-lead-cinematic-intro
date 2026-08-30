@@ -20,24 +20,21 @@ export const registrationReadiness = [
   ["04", "Confirmed record", "A receipt appears only after the official registration sheet confirms your submission."],
 ] as const;
 
-import { assetUrl } from "@/lib/assetUrl";
-
-const factionFallback = "/assets/lead-lead-fallback.svg";
-const thynaLogo = "/assets/lc-thyna-logo-white.png";
+const lcLogo = (file: string) => `/assets/lcs/${file}.png`;
 
 export const conferenceFactions = [
-  { id: "thyna", name: "LC Thyna", logo: thynaLogo, logoTreatment: "transparent", established: "Since 1997", detail: "LC Thyna", slogan: "للقمة و نقودوها" },
-  { id: "university", name: "LC University", logo: assetUrl("/manus-storage/University_28b5bd24.png", factionFallback), logoTreatment: "paper", established: "Since 1987", detail: "LC University", slogan: "لوكال يشعل بالنار" },
-  { id: "bullaregia", name: "SU Bullaregia", logo: assetUrl("/manus-storage/Bullaregia_4f76f328.png", factionFallback), logoTreatment: "paper", established: "Since 2025", detail: "SU Bullaregia", slogan: "The north will remember" },
-  { id: "tacapes", name: "LC Tacapes", logo: assetUrl("/manus-storage/Tacapes_4d0e60ea.png", factionFallback), logoTreatment: "paper", established: "Since 2014", detail: "LC Tacapes", slogan: "تكاباس الحب" },
-  { id: "ruspina", name: "LC Ruspina", logo: assetUrl("/manus-storage/Ruspina_0fcb8c68.png", factionFallback), logoTreatment: "paper", established: "Since 2014", detail: "LC Ruspina", slogan: "روسبينا امانة" },
-  { id: "carthage", name: "LC Carthage", logo: assetUrl("/manus-storage/Carthage_9a80d95c.png", factionFallback), logoTreatment: "paper", established: "Since 1962", detail: "LC Carthage", slogan: "قرطاج متزول" },
-  { id: "sfax", name: "LC Sfax", logo: assetUrl("/manus-storage/Sfax_31daaccc.png", factionFallback), logoTreatment: "paper", established: "Since 1987", detail: "LC Sfax", slogan: "صفاقس حاضرين" },
-  { id: "bardo", name: "LC Bardo", logo: assetUrl("/manus-storage/Bardo_501c474c.png", factionFallback), logoTreatment: "paper", established: "Since 1984", detail: "LC Bardo", slogan: "نعطيها عينيا و وقت طويل" },
-  { id: "bizerte", name: "LC Bizerte", logo: assetUrl("/manus-storage/Bizerte_f428d7e3.png", factionFallback), logoTreatment: "paper", established: "Since 2012", detail: "LC Bizerte", slogan: "بنزرت تعيش تعيش نعيش" },
-  { id: "hadrumet", name: "LC Hadrumet", logo: assetUrl("/manus-storage/Hadrumet_97164074.png", factionFallback), logoTreatment: "paper", established: "Since 2009", detail: "LC Hadrumet", slogan: "حضرموت هنا و ستحقق احلامها الكبرى" },
-  { id: "medina", name: "LC Medina", logo: assetUrl("/manus-storage/Medina_f3ac61b8.png", factionFallback), logoTreatment: "paper", established: "Since 1989", detail: "LC Medina", slogan: "مدينة ما ننساك" },
-  { id: "nabel", name: "LC Nabel", logo: assetUrl("/manus-storage/Nabel_55824eee.png", factionFallback), logoTreatment: "paper", established: "Since 2005", detail: "LC Nabel", slogan: "نابل فالقلب" },
+  { id: "thyna", name: "LC Thyna", logo: lcLogo("thyna"), logoTreatment: "transparent", established: "Since 1997", detail: "LC Thyna", slogan: "للقمة و نقودوها" },
+  { id: "university", name: "LC University", logo: lcLogo("university"), logoTreatment: "paper", established: "Since 1987", detail: "LC University", slogan: "لوكال يشعل بالنار" },
+  { id: "bullaregia", name: "SU Bullaregia", logo: lcLogo("bullaregia"), logoTreatment: "paper", established: "Since 2025", detail: "SU Bullaregia", slogan: "The north will remember" },
+  { id: "tacapes", name: "LC Tacapes", logo: lcLogo("tacapes"), logoTreatment: "paper", established: "Since 2014", detail: "LC Tacapes", slogan: "تكاباس الحب" },
+  { id: "ruspina", name: "LC Ruspina", logo: lcLogo("ruspina"), logoTreatment: "paper", established: "Since 2014", detail: "LC Ruspina", slogan: "روسبينا امانة" },
+  { id: "carthage", name: "LC Carthage", logo: lcLogo("carthage"), logoTreatment: "paper", established: "Since 1962", detail: "LC Carthage", slogan: "قرطاج متزول" },
+  { id: "sfax", name: "LC Sfax", logo: lcLogo("sfax"), logoTreatment: "paper", established: "Since 1987", detail: "LC Sfax", slogan: "صفاقس حاضرين" },
+  { id: "bardo", name: "LC Bardo", logo: lcLogo("bardo"), logoTreatment: "paper", established: "Since 1984", detail: "LC Bardo", slogan: "نعطيها عينيا و وقت طويل" },
+  { id: "bizerte", name: "LC Bizerte", logo: lcLogo("bizerte"), logoTreatment: "paper", established: "Since 2012", detail: "LC Bizerte", slogan: "بنزرت تعيش تعيش نعيش" },
+  { id: "hadrumet", name: "LC Hadrumet", logo: lcLogo("hadrumet"), logoTreatment: "paper", established: "Since 2009", detail: "LC Hadrumet", slogan: "حضرموت هنا و ستحقق احلامها الكبرى" },
+  { id: "medina", name: "LC Medina", logo: lcLogo("medina"), logoTreatment: "paper", established: "Since 1989", detail: "LC Medina", slogan: "مدينة ما ننساك" },
+  { id: "nabel", name: "LC Nabel", logo: lcLogo("nabel"), logoTreatment: "paper", established: "Since 2005", detail: "LC Nabel", slogan: "نابل فالقلب" },
 ] as const;
 
 export function pad(value: number) {
