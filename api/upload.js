@@ -1,4 +1,4 @@
-// api/upload.ts
+// vercel/upload.ts
 import { handleUpload } from "@vercel/blob/client";
 var allowedContentTypes = [
   "image/jpeg",

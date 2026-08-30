@@ -1,4 +1,4 @@
-// api/index.ts
+// vercel/index.ts
 import express from "express";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 
@@ -1004,7 +1004,7 @@ async function createContext(opts) {
   };
 }
 
-// api/index.ts
+// vercel/index.ts
 var app = express();
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ limit: "1mb", extended: true }));
