@@ -200,6 +200,14 @@ function cleanUrl(value) {
   return candidate;
 }
 function numberOrBlank(value) { const number = Number(value); return Number.isFinite(number) ? number : ""; }
+function authorizeDrive() {
+  const folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+  const probe = folder.createFile("lead-lead-permission-check.txt", "permission check");
+  probe.setTrashed(true);
+  UrlFetchApp.fetch("https://www.google.com", { muteHttpExceptions: true });
+  return "Drive write and external requests authorized";
+}
+
 function jsonResponse(data) {
   // HtmlService avoids ContentService's one-time googleusercontent redirect,
   // which can make server-to-server POST confirmations unreadable.
