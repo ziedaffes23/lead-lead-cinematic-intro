@@ -1,5 +1,14 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+
+type VercelRequest = {
+  method?: string;
+  body?: unknown;
+};
+
+type VercelResponse = {
+  status: (code: number) => VercelResponse;
+  json: (body: unknown) => VercelResponse;
+};
 
 const allowedContentTypes = [
   "image/jpeg",
