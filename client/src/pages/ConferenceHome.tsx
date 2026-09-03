@@ -108,7 +108,7 @@ export default function ConferenceHome() {
             </span>
             <span>
               <small>LOCATION</small>
-              <b>AMIR PALACE</b>
+              <b>HOTEL MONASTIR CENTRE</b>
             </span>
             <span>
               <small>CREED COSTS</small>
